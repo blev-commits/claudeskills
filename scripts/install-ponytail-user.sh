@@ -54,120 +54,39 @@ if [ "$mode" = install ]; then
   # may move or be deleted, and ponytail-instructions.js reads the ruleset from
   # ../skills/ponytail/SKILL.md relative to the hooks directory. Copying keeps
   # the hooks emitting the real skill body instead of their terser fallback.
+  #
+  # A symlink already there is left alone: link-skills.sh puts one per skill so
+  # `npx skills update` in the repo reaches the user-level install, and the
+  # hooks read the ruleset through it just as well. Replacing it with a copy
+  # would quietly cut that skill off from updates.
   for s in "${SKILLS[@]}"; do
+    if [ -L "$TARGET/skills/$s" ] && [ -f "$TARGET/skills/$s/SKILL.md" ]; then
+      continue
+    fi
     rm -rf "$TARGET/skills/$s"
     cp -R "$REPO/.agents/skills/$s" "$TARGET/skills/$s"
   done
 else
   rm -f "$TARGET"/hooks/ponytail-*.js "$TARGET"/hooks/ponytail-statusline.sh "$TARGET"/hooks/ponytail-statusline.ps1
   rm -f "$TARGET"/commands/ponytail*.md
-  for s in "${SKILLS[@]}"; do rm -rf "$TARGET/skills/$s"; done
+  # Only copies this script made are removed. A symlink belongs to
+  # link-skills.sh, which manages all 45 skills, not just ponytail's.
+  for s in "${SKILLS[@]}"; do
+    [ -L "$TARGET/skills/$s" ] || rm -rf "$TARGET/skills/$s"
+  done
   # State ponytail writes outside its own files: the active-mode flag the
   # statusline reads, and the marker for the statusline setup offer.
   rm -f "$TARGET/.ponytail-active" "$TARGET/.ponytail-statusline-nudged"
 fi
 
 # settings.json is edited rather than written: it is the user's own file and
-# usually already holds their hooks, plugins and preferences.
-MODE="$mode" SETTINGS="$TARGET/settings.json" node - <<'JS'
-const fs = require('fs');
-
-const file = process.env.SETTINGS;
-const uninstalling = process.env.MODE === 'uninstall';
-const dir = '${CLAUDE_CONFIG_DIR:-$HOME/.claude}'; // resolved by the shell that runs the hook
-const isPonytail = (h) => typeof h.command === 'string' && /ponytail-[a-z-]+\.js/.test(h.command);
-
-const entries = {
-  SessionStart: {
-    matcher: 'startup|resume|clear|compact',
-    hooks: [{
-      type: 'command',
-      command: `node "${dir}/hooks/ponytail-activate.js"`,
-      timeout: 5,
-      statusMessage: 'Loading ponytail mode...',
-    }],
-  },
-  SubagentStart: {
-    hooks: [{
-      type: 'command',
-      command: `node "${dir}/hooks/ponytail-subagent.js"`,
-      timeout: 5,
-      statusMessage: 'Loading ponytail mode...',
-    }],
-  },
-  UserPromptSubmit: {
-    hooks: [{
-      type: 'command',
-      command: `node "${dir}/hooks/ponytail-mode-tracker.js"`,
-      timeout: 5,
-      statusMessage: 'Tracking ponytail mode...',
-    }],
-  },
-};
-
-let settings = {};
-if (fs.existsSync(file)) {
-  // Strip a UTF-8 BOM: some editors prepend one and it breaks JSON.parse.
-  const raw = fs.readFileSync(file, 'utf8').replace(/^﻿/, '');
-  try {
-    settings = JSON.parse(raw);
-  } catch (e) {
-    console.error(`error: ${file} is not valid JSON (${e.message}).`);
-    console.error('       Fix or move it, then re-run. Nothing was changed.');
-    process.exit(1);
-  }
-  fs.copyFileSync(file, `${file}.bak`);
-}
-
-settings.hooks = settings.hooks || {};
-const changed = [];
-
-for (const [event, entry] of Object.entries(entries)) {
-  const groups = Array.isArray(settings.hooks[event]) ? settings.hooks[event] : [];
-
-  if (uninstalling) {
-    const kept = groups
-      .map((g) => ({ ...g, hooks: (g.hooks || []).filter((h) => !isPonytail(h)) }))
-      .filter((g) => g.hooks.length > 0);
-    if (kept.length !== groups.length) changed.push(event);
-    if (kept.length) settings.hooks[event] = kept;
-    else delete settings.hooks[event];
-    continue;
-  }
-
-  if (groups.some((g) => (g.hooks || []).some(isPonytail))) continue; // already registered
-  settings.hooks[event] = [...groups, entry];
-  changed.push(event);
-}
-
-if (uninstalling && !Object.keys(settings.hooks).length) delete settings.hooks;
-
-// statusLine: wire the ponytail badge here, where it belongs. ${dir}/hooks is a
-// copy this script made, in a directory Claude Code owns -- not a git working
-// tree -- so a command pointing at it is stable across branch switches. Only
-// ever touch an entry that is ours: a statusLine the user set themselves is
-// left exactly as it is, and uninstall removes only ponytail's own.
-const ourStatusLine = `bash "${dir}/hooks/ponytail-statusline.sh"`;
-const isOurStatusLine = (s) =>
-  s && typeof s.command === 'string' && /ponytail-statusline\.(sh|ps1)/.test(s.command);
-
-if (uninstalling) {
-  if (isOurStatusLine(settings.statusLine)) {
-    delete settings.statusLine;
-    changed.push('statusLine');
-  }
-} else if (!settings.statusLine) {
-  settings.statusLine = { type: 'command', command: ourStatusLine };
-  changed.push('statusLine');
-}
-
-fs.writeFileSync(file, `${JSON.stringify(settings, null, 2)}\n`);
-
-const verb = uninstalling ? 'Removed' : 'Registered';
-console.log(changed.length
-  ? `${verb}: ${changed.join(', ')}`
-  : `Hooks already ${uninstalling ? 'absent' : 'registered'}, settings.json left as it was`);
-JS
+# usually already holds their hooks, plugins and preferences. The hooks path is
+# left as shell syntax so a moved config directory keeps working. STATUSLINE=1
+# also wires the ponytail badge, which only makes sense per-user: in managed
+# settings it would override every account's own statusline.
+MODE="$mode" SETTINGS="$TARGET/settings.json" STATUSLINE=1 \
+  HOOKS_DIR='${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks' \
+  node "$REPO/scripts/lib/merge-ponytail-hooks.js"
 
 if [ "$mode" = install ]; then
   cat <<EOF

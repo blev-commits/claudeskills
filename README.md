@@ -197,6 +197,12 @@ installed, run:
 claude plugin install code-review@claude-code-plugins
 ```
 
+## Examples
+
+`examples/design-taste-frontend/` holds a landing page built by running
+`design-taste-frontend` against an invented brief, with a note on which of the
+skill's rules visibly changed the output. One file, opens in a browser.
+
 ## Updating
 
 Every collection is tracked in `skills-lock.json`, so the CLI can refresh them

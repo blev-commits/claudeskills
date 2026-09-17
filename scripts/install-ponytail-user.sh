@@ -81,8 +81,10 @@ fi
 
 # settings.json is edited rather than written: it is the user's own file and
 # usually already holds their hooks, plugins and preferences. The hooks path is
-# left as shell syntax so a moved config directory keeps working.
-MODE="$mode" SETTINGS="$TARGET/settings.json" \
+# left as shell syntax so a moved config directory keeps working. STATUSLINE=1
+# also wires the ponytail badge, which only makes sense per-user: in managed
+# settings it would override every account's own statusline.
+MODE="$mode" SETTINGS="$TARGET/settings.json" STATUSLINE=1 \
   HOOKS_DIR='${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks' \
   node "$REPO/scripts/lib/merge-ponytail-hooks.js"
 
@@ -93,6 +95,7 @@ ponytail installed for this user in $TARGET
   skills:   ${#SKILLS[@]} (ponytail, -review, -audit, -debt, -gain, -help)
   commands: /ponytail, /ponytail-review, /ponytail-audit, /ponytail-debt, /ponytail-gain, /ponytail-help
   hooks:    SessionStart, SubagentStart, UserPromptSubmit
+  status:   [PONYTAIL] badge, unless you already had a statusLine
 
 Active in every project from the next session on. Turn it off with
 /ponytail off, or permanently with PONYTAIL_DEFAULT_MODE=off in your
@@ -101,5 +104,5 @@ EOF
 else
   echo
   echo "ponytail removed from $TARGET"
-  echo "A statusLine entry, if you accepted that setup offer, is left alone — it is yours."
+  echo "A statusLine you set yourself is left alone — only ponytail's own entry is removed."
 fi

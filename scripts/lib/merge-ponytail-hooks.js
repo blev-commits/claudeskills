@@ -81,9 +81,33 @@ for (const [event, entry] of Object.entries(entries)) {
 
 if (uninstalling && !Object.keys(settings.hooks).length) delete settings.hooks;
 
+// statusLine: the ponytail badge, wired to the copy under HOOKS_DIR rather than
+// to a git working tree, so the command stays valid across branch switches.
+// Only ever touch an entry that is ours: a statusLine the user set themselves
+// is left exactly as it is, and uninstall removes only ponytail's own.
+//
+// Off unless STATUSLINE is set, which the per-user installer does and the
+// machine-wide one deliberately does not: in managed settings a statusLine
+// would override the one every account had chosen for itself.
+if (process.env.STATUSLINE) {
+  const ourStatusLine = `bash "${hooksDir}/ponytail-statusline.sh"`;
+  const isOurStatusLine = (s) =>
+    s && typeof s.command === 'string' && /ponytail-statusline\.(sh|ps1)/.test(s.command);
+
+  if (uninstalling) {
+    if (isOurStatusLine(settings.statusLine)) {
+      delete settings.statusLine;
+      changed.push('statusLine');
+    }
+  } else if (!settings.statusLine) {
+    settings.statusLine = { type: 'command', command: ourStatusLine };
+    changed.push('statusLine');
+  }
+}
+
 fs.writeFileSync(file, `${JSON.stringify(settings, null, 2)}\n`);
 
 const verb = uninstalling ? 'Removed' : 'Registered';
 console.log(changed.length
-  ? `${verb} hooks: ${changed.join(', ')}`
+  ? `${verb}: ${changed.join(', ')}`
   : `Hooks already ${uninstalling ? 'absent' : 'registered'}, ${file} left as it was`);

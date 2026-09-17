@@ -62,15 +62,35 @@ let output = getPonytailInstructions(mode);
 
 // 3. Detect missing statusline config — nudge Claude to help set it up
 if (!isCodex && !isCopilot && !isCursor) try {
+  // LOCAL PATCH -- diverges from upstream DietrichGebert/ponytail. See README.
+  // A statusLine in the project's settings.json counts as configured too, so a
+  // repo that wires the badge itself is not nagged to wire it again globally.
+  const projectSettingsPath = process.env.CLAUDE_PROJECT_DIR
+    ? path.join(process.env.CLAUDE_PROJECT_DIR, '.claude', 'settings.json')
+    : path.join(__dirname, '..', 'settings.json');
+
   let hasStatusline = false;
-  if (fs.existsSync(settingsPath)) {
-    // Strip UTF-8 BOM some editors prepend on Windows (breaks JSON.parse)
-    const raw = fs.readFileSync(settingsPath, 'utf8').replace(/^\uFEFF/, '');
-    const settings = JSON.parse(raw);
-    if (settings.statusLine) {
-      hasStatusline = true;
-    }
+  for (const candidate of [settingsPath, projectSettingsPath]) {
+    if (!fs.existsSync(candidate)) continue;
+    try {
+      // Strip UTF-8 BOM some editors prepend on Windows (breaks JSON.parse)
+      const raw = fs.readFileSync(candidate, 'utf8').replace(/^\uFEFF/, '');
+      if (JSON.parse(raw).statusLine) {
+        hasStatusline = true;
+        break;
+      }
+    } catch (_) { /* a malformed settings file must not suppress the hook */ }
   }
+
+  // LOCAL PATCH -- the important half. Upstream these hooks live in a plugin
+  // directory Claude Code owns, so __dirname is stable and proposing it as a
+  // global statusLine command is fine. Vendored into a git checkout it is a
+  // branch-switchable working tree, and the nudge below would ask for that
+  // mutable path to be installed into the GLOBAL settings file, where it would
+  // execute on every statusline render in every project. Detect that case and
+  // point at the user-level installer instead of handing out the repo path.
+  const repoRoot = path.join(__dirname, '..', '..');
+  const inWorkingTree = fs.existsSync(path.join(repoRoot, '.git'));
 
   // Nudge at most once — the flag file marks that the user has already seen
   // (and implicitly declined) the statusline setup offer. Repeating it every
@@ -81,7 +101,17 @@ if (!isCodex && !isCopilot && !isCursor) try {
     const isWindows = process.platform === 'win32';
     const scriptName = isWindows ? 'ponytail-statusline.ps1' : 'ponytail-statusline.sh';
     const scriptPath = path.join(__dirname, scriptName);
-    if (isShellSafe(scriptPath)) {
+    if (inWorkingTree) {
+      // LOCAL PATCH -- see above. Never hand out a working-tree path for global
+      // install; the installer copies the hooks somewhere stable first.
+      output += "\n\n" +
+        "STATUSLINE SETUP AVAILABLE: ponytail includes a statusline badge showing the active mode " +
+        "(e.g. [PONYTAIL], [PONYTAIL:ULTRA]). It is not configured yet. These hooks are running from a " +
+        "git working tree, so do NOT add this path to any settings file -- it changes when the branch " +
+        "changes. To enable the badge, the user can run scripts/install-ponytail-user.sh from the repo, " +
+        "which copies the hooks somewhere stable and wires the badge there. Mention this once if relevant; " +
+        "do not edit settings files to set it up.";
+    } else if (isShellSafe(scriptPath)) {
       const command = isWindows
         ? `powershell -ExecutionPolicy Bypass -File "${scriptPath}"`
         : `bash "${scriptPath}"`;

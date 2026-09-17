@@ -155,15 +155,53 @@ each is additive and independently guarded:
 | `SessionStart` | `ponytail-activate.js` | ponytail |
 | `SubagentStart` | `ponytail-subagent.js` | ponytail |
 | `UserPromptSubmit` | `ponytail-mode-tracker.js` | ponytail |
+| `SessionStart` | `run-hook.cmd impeccable-bootstrap` | Impeccable (user-level) |
 | `PostToolUse`, `Stop` | `impeccable` | Impeccable (user-level) |
 
 **The Impeccable hooks are the exception worth noting.** That skill is *not* in
-this repo — it is installed at the user level (`~/.claude/skills/impeccable/`).
-The hooks are guarded with a file-existence check, so they silently no-op for
-anyone who hasn't installed it separately. Only the shared hook config is
-version-controlled here.
+this repo — it is installed at the user level (`~/.claude/skills/impeccable/`),
+and only the shared hook config is version-controlled here. The `PostToolUse`
+and `Stop` hooks are guarded with a file-existence check, so they silently
+no-op until that install exists.
+
+You do not have to run the install yourself. The `impeccable-bootstrap`
+`SessionStart` hook does it on your first session in this repo if the skill is
+missing: it runs `npx impeccable install --user` detached, so startup is never
+blocked on the ~16MB download, and the detector goes live in your *next*
+session rather than that one. Its log is `~/.claude/.impeccable-bootstrap/install.log`.
+Set `IMPECCABLE_NO_BOOTSTRAP=1` to opt out, or run `npx impeccable install --user`
+yourself to have it active immediately.
 
 Slash commands live in `.claude/commands/` (ponytail).
+
+### The statusline badge, and one local patch to ponytail
+
+The `[PONYTAIL]` / `[PONYTAIL:ULTRA]` badge is wired by
+`scripts/install-ponytail-user.sh` at user level, not here — it points at the
+copy of the script the installer places in `$CLAUDE_CONFIG_DIR`. A `statusLine`
+you set yourself is never overwritten, and an uninstall removes only ponytail's.
+
+**`.claude/hooks/ponytail-activate.js` deliberately differs from upstream.** Every
+other vendored ponytail file is byte-identical to `DietrichGebert/ponytail`; this
+one carries two changes marked `LOCAL PATCH` in the source. Re-vendoring ponytail
+will revert them, so re-apply them.
+
+Upstream, these hooks run from a plugin directory Claude Code owns, so
+`__dirname` is stable and offering it as a global `statusLine` command is
+harmless. Vendored into this repo, `__dirname` is a branch-switchable git working
+tree — and the hook's setup nudge asked for that path to be added to the
+**global** `~/.claude/settings.json`, where it would run on every statusline
+render in every project. Checking out a branch that changed that script would
+change what executes machine-wide.
+
+The patch makes the hook detect that it is running from a working tree and point
+at the installer instead of handing out the path, and lets a project-level
+`statusLine` count as already-configured. Upstream's documented escape hatch is
+not usable: `PONYTAIL_HIDE_STATUS` is read by `getHideStatus()` in
+`ponytail-config.js`, which nothing calls.
+
+An installed copy is unaffected — `$CLAUDE_CONFIG_DIR/hooks` is not a working
+tree, so the hook behaves exactly as upstream intends there.
 
 ### ponytail in every project
 

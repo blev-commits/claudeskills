@@ -23,10 +23,15 @@ if (!file || !hooksDir) {
   process.exit(2);
 }
 
+// NODE_BIN is how the installer says which interpreter the hook shell can
+// actually reach: bare "node" when it is on that shell's PATH, an absolute path
+// when it is not (nvm, Homebrew on Apple Silicon, Nix). Quoted either way.
+const nodeBin = process.env.NODE_BIN || 'node';
+
 const isPonytail = (h) => typeof h.command === 'string' && /ponytail-[a-z-]+\.js/.test(h.command);
 const hook = (script, statusMessage) => ({
   type: 'command',
-  command: `node "${hooksDir}/${script}"`,
+  command: `"${nodeBin}" "${hooksDir}/${script}"`,
   timeout: 5,
   statusMessage,
 });
@@ -63,20 +68,25 @@ const changed = [];
 
 for (const [event, entry] of Object.entries(entries)) {
   const groups = Array.isArray(settings.hooks[event]) ? settings.hooks[event] : [];
+  const before = JSON.stringify(settings.hooks[event] ?? null);
+
+  // Ours out, everyone else's untouched. Installing then puts the current entry
+  // back, so a re-run repairs an entry gone stale — a `node` that the hook
+  // shell can no longer reach, or an absolute path a version upgrade moved —
+  // rather than leaving a broken hook in place because one was already there.
+  const kept = groups
+    .map((g) => ({ ...g, hooks: (g.hooks || []).filter((h) => !isPonytail(h)) }))
+    .filter((g) => g.hooks.length > 0);
 
   if (uninstalling) {
-    const kept = groups
-      .map((g) => ({ ...g, hooks: (g.hooks || []).filter((h) => !isPonytail(h)) }))
-      .filter((g) => g.hooks.length > 0);
-    if (kept.length !== groups.length) changed.push(event);
     if (kept.length) settings.hooks[event] = kept;
     else delete settings.hooks[event];
+    if (JSON.stringify(settings.hooks[event] ?? null) !== before) changed.push(event);
     continue;
   }
 
-  if (groups.some((g) => (g.hooks || []).some(isPonytail))) continue; // already registered
-  settings.hooks[event] = [...groups, entry];
-  changed.push(event);
+  settings.hooks[event] = [...kept, entry];
+  if (JSON.stringify(settings.hooks[event]) !== before) changed.push(event);
 }
 
 if (uninstalling && !Object.keys(settings.hooks).length) delete settings.hooks;

@@ -1,12 +1,13 @@
-# Engine binaries: fetched per platform by the impeccable launcher on first
-# run, never tracked. The launcher next to them
-# (.claude/skills/impeccable/scripts/impeccable) is the tracked file.
+# Impeccable is installed at the user level (~/.claude/skills/impeccable), not
+# in this repo; only the shared design hook in .claude/settings.json is tracked.
+# These patterns keep a project-level install out of git if one is ever added.
 **/skills/impeccable/scripts/bin/
 **/skills/impeccable/scripts/config.json
+.claude/skills/impeccable/
+.claude/agents/impeccable-*.md
 
-# Machine-local Claude Code settings. The impeccable design hook lives in the
-# tracked .claude/settings.json instead, so it is shared with the team;
-# install/update detect it there and leave settings.local.json alone.
+# Machine-local Claude Code settings. The impeccable hook lives in the tracked
+# .claude/settings.json instead, so it is shared rather than per-machine.
 .claude/settings.local.json
 
 # impeccable-ignore-start

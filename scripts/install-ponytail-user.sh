@@ -19,6 +19,15 @@ command -v node >/dev/null 2>&1 || {
   exit 1
 }
 
+# Which node the hooks can reach is not the one on your PATH: they run in a
+# non-interactive shell, whose PATH is narrower under nvm, Homebrew on Apple
+# Silicon or Nix. Bare "node" when it resolves there, the absolute path when it
+# does not, so the hooks work without a symlink into /usr/local/bin.
+NODE_BIN=node
+if [ -z "$(env -i /bin/sh -c 'command -v node' 2>/dev/null)" ]; then
+  NODE_BIN="$(command -v node)"
+fi
+
 mode=install
 hooks=1
 for arg in "$@"; do
@@ -93,7 +102,7 @@ fi
 # settings it would override every account's own statusline.
 MODE="$mode" SETTINGS="$TARGET/settings.json" STATUSLINE=1 HOOKS="$hooks" \
   HOOKS_DIR='${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks' \
-  node "$REPO/scripts/lib/merge-ponytail-hooks.js"
+  NODE_BIN="$NODE_BIN" node "$REPO/scripts/lib/merge-ponytail-hooks.js"
 
 if [ "$mode" = install ]; then
   cat <<EOF

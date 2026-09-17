@@ -46,6 +46,15 @@ command -v node >/dev/null 2>&1 || {
   exit 1
 }
 
+# Which node the hooks can reach is not the one on your PATH: they run in a
+# non-interactive shell, whose PATH is narrower under nvm, Homebrew on Apple
+# Silicon or Nix. Bare "node" when it resolves there, the absolute path when it
+# does not, so the hooks work without a symlink into /usr/local/bin.
+NODE_BIN=node
+if [ -z "$(env -i /bin/sh -c 'command -v node' 2>/dev/null)" ]; then
+  NODE_BIN="$(command -v node)"
+fi
+
 # Every account's sessions will run these hooks, so the files and the managed
 # settings must be root-owned. Without root the install would either fail
 # halfway or land somewhere users could edit.
@@ -99,7 +108,7 @@ fi
 # were gone, every account on the machine would be left with managed hooks
 # pointing at scripts that no longer exist.
 MODE="$mode" SETTINGS="$MANAGED" HOOKS_DIR="$SHARE/hooks" \
-  node "$REPO/scripts/lib/merge-ponytail-hooks.js"
+  NODE_BIN="$NODE_BIN" node "$REPO/scripts/lib/merge-ponytail-hooks.js"
 
 if [ "$mode" = uninstall ]; then
   rm -rf "$SHARE"

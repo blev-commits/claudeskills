@@ -165,6 +165,35 @@ version-controlled here.
 
 Slash commands live in `.claude/commands/` (ponytail).
 
+### The statusline badge, and one local patch to ponytail
+
+The `[PONYTAIL]` / `[PONYTAIL:ULTRA]` badge is wired by
+`scripts/install-ponytail-user.sh` at user level, not here — it points at the
+copy of the script the installer places in `$CLAUDE_CONFIG_DIR`. A `statusLine`
+you set yourself is never overwritten, and an uninstall removes only ponytail's.
+
+**`.claude/hooks/ponytail-activate.js` deliberately differs from upstream.** Every
+other vendored ponytail file is byte-identical to `DietrichGebert/ponytail`; this
+one carries two changes marked `LOCAL PATCH` in the source. Re-vendoring ponytail
+will revert them, so re-apply them.
+
+Upstream, these hooks run from a plugin directory Claude Code owns, so
+`__dirname` is stable and offering it as a global `statusLine` command is
+harmless. Vendored into this repo, `__dirname` is a branch-switchable git working
+tree — and the hook's setup nudge asked for that path to be added to the
+**global** `~/.claude/settings.json`, where it would run on every statusline
+render in every project. Checking out a branch that changed that script would
+change what executes machine-wide.
+
+The patch makes the hook detect that it is running from a working tree and point
+at the installer instead of handing out the path, and lets a project-level
+`statusLine` count as already-configured. Upstream's documented escape hatch is
+not usable: `PONYTAIL_HIDE_STATUS` is read by `getHideStatus()` in
+`ponytail-config.js`, which nothing calls.
+
+An installed copy is unaffected — `$CLAUDE_CONFIG_DIR/hooks` is not a working
+tree, so the hook behaves exactly as upstream intends there.
+
 ### ponytail in every project
 
 The wiring above is project-level: ponytail is active when you work in this repo

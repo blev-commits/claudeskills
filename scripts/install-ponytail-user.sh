@@ -142,11 +142,30 @@ for (const [event, entry] of Object.entries(entries)) {
 
 if (uninstalling && !Object.keys(settings.hooks).length) delete settings.hooks;
 
+// statusLine: wire the ponytail badge here, where it belongs. ${dir}/hooks is a
+// copy this script made, in a directory Claude Code owns -- not a git working
+// tree -- so a command pointing at it is stable across branch switches. Only
+// ever touch an entry that is ours: a statusLine the user set themselves is
+// left exactly as it is, and uninstall removes only ponytail's own.
+const ourStatusLine = `bash "${dir}/hooks/ponytail-statusline.sh"`;
+const isOurStatusLine = (s) =>
+  s && typeof s.command === 'string' && /ponytail-statusline\.(sh|ps1)/.test(s.command);
+
+if (uninstalling) {
+  if (isOurStatusLine(settings.statusLine)) {
+    delete settings.statusLine;
+    changed.push('statusLine');
+  }
+} else if (!settings.statusLine) {
+  settings.statusLine = { type: 'command', command: ourStatusLine };
+  changed.push('statusLine');
+}
+
 fs.writeFileSync(file, `${JSON.stringify(settings, null, 2)}\n`);
 
 const verb = uninstalling ? 'Removed' : 'Registered';
 console.log(changed.length
-  ? `${verb} hooks: ${changed.join(', ')}`
+  ? `${verb}: ${changed.join(', ')}`
   : `Hooks already ${uninstalling ? 'absent' : 'registered'}, settings.json left as it was`);
 JS
 
@@ -157,6 +176,7 @@ ponytail installed for this user in $TARGET
   skills:   ${#SKILLS[@]} (ponytail, -review, -audit, -debt, -gain, -help)
   commands: /ponytail, /ponytail-review, /ponytail-audit, /ponytail-debt, /ponytail-gain, /ponytail-help
   hooks:    SessionStart, SubagentStart, UserPromptSubmit
+  status:   [PONYTAIL] badge, unless you already had a statusLine
 
 Active in every project from the next session on. Turn it off with
 /ponytail off, or permanently with PONYTAIL_DEFAULT_MODE=off in your
@@ -165,5 +185,5 @@ EOF
 else
   echo
   echo "ponytail removed from $TARGET"
-  echo "A statusLine entry, if you accepted that setup offer, is left alone — it is yours."
+  echo "A statusLine you set yourself is left alone — only ponytail's own entry is removed."
 fi

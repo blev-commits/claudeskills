@@ -4,7 +4,9 @@
 **/skills/impeccable/scripts/bin/
 **/skills/impeccable/scripts/config.json
 
-# Machine-local Claude Code settings (impeccable installs its design hook here).
+# Machine-local Claude Code settings. The impeccable design hook lives in the
+# tracked .claude/settings.json instead, so it is shared with the team;
+# install/update detect it there and leave settings.local.json alone.
 .claude/settings.local.json
 
 # impeccable-ignore-start

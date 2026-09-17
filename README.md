@@ -155,13 +155,22 @@ each is additive and independently guarded:
 | `SessionStart` | `ponytail-activate.js` | ponytail |
 | `SubagentStart` | `ponytail-subagent.js` | ponytail |
 | `UserPromptSubmit` | `ponytail-mode-tracker.js` | ponytail |
+| `SessionStart` | `run-hook.cmd impeccable-bootstrap` | Impeccable (user-level) |
 | `PostToolUse`, `Stop` | `impeccable` | Impeccable (user-level) |
 
 **The Impeccable hooks are the exception worth noting.** That skill is *not* in
-this repo — it is installed at the user level (`~/.claude/skills/impeccable/`).
-The hooks are guarded with a file-existence check, so they silently no-op for
-anyone who hasn't installed it separately. Only the shared hook config is
-version-controlled here.
+this repo — it is installed at the user level (`~/.claude/skills/impeccable/`),
+and only the shared hook config is version-controlled here. The `PostToolUse`
+and `Stop` hooks are guarded with a file-existence check, so they silently
+no-op until that install exists.
+
+You do not have to run the install yourself. The `impeccable-bootstrap`
+`SessionStart` hook does it on your first session in this repo if the skill is
+missing: it runs `npx impeccable install --user` detached, so startup is never
+blocked on the ~16MB download, and the detector goes live in your *next*
+session rather than that one. Its log is `~/.claude/.impeccable-bootstrap/install.log`.
+Set `IMPECCABLE_NO_BOOTSTRAP=1` to opt out, or run `npx impeccable install --user`
+yourself to have it active immediately.
 
 Slash commands live in `.claude/commands/` (ponytail).
 

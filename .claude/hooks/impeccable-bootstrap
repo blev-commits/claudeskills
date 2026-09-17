@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# SessionStart hook: ensure the user-level Impeccable install exists.
+#
+# The design hook in .claude/settings.json runs
+# "$HOME/.claude/skills/impeccable/scripts/impeccable" behind a file-existence
+# guard, so it stays silent for anyone who has never run
+# `npx impeccable install --user`. This bootstrap performs that install once so
+# a fresh clone gets the detector without anyone having to read the README.
+#
+# The install downloads ~16MB, so it runs detached: session startup is never
+# blocked on it, and the skill becomes active in the next session rather than
+# this one.
+#
+# Never fails a session: every path exits 0.
+#
+# Opt out with IMPECCABLE_NO_BOOTSTRAP=1.
+
+set -uo pipefail
+
+LAUNCHER="${HOME}/.claude/skills/impeccable/scripts/impeccable"
+STATE_DIR="${HOME}/.claude/.impeccable-bootstrap"
+LOCK_DIR="${STATE_DIR}/lock"
+LOG="${STATE_DIR}/install.log"
+
+case "${IMPECCABLE_NO_BOOTSTRAP:-}" in
+    1 | true | yes) exit 0 ;;
+esac
+
+# Already installed: the overwhelmingly common case, one stat and out.
+[ -x "$LAUNCHER" ] && exit 0
+
+# No npx means no way to install; say nothing rather than nag every session.
+command -v npx >/dev/null 2>&1 || exit 0
+
+mkdir -p "$STATE_DIR" 2>/dev/null || exit 0
+
+# Clear a lock left behind by an install that died (crash, killed session).
+if [ -d "$LOCK_DIR" ] && [ -n "$(find "$LOCK_DIR" -maxdepth 0 -mmin +30 2>/dev/null)" ]; then
+    rmdir "$LOCK_DIR" 2>/dev/null || true
+fi
+
+# mkdir is atomic: whichever session wins installs, the others fall through.
+mkdir "$LOCK_DIR" 2>/dev/null || exit 0
+
+# Detached, with its own stdout/stderr, so this hook's pipe closes immediately.
+(
+    trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
+    printf '=== impeccable bootstrap %s ===\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    npx -y impeccable install --user --providers=claude -y
+) >"$LOG" 2>&1 &
+disown 2>/dev/null || true
+
+notice="Impeccable (design detector) was missing and is installing in the background at the user level; its log is at ~/.claude/.impeccable-bootstrap/install.log. The design hook in .claude/settings.json stays silent until the install finishes, which is the next session. Nothing to do about this."
+
+if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+    printf '{\n  "additional_context": "%s"\n}\n' "$notice"
+elif [ -n "${COPILOT_CLI:-}" ]; then
+    printf '{\n  "additionalContext": "%s"\n}\n' "$notice"
+else
+    printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$notice"
+fi
+
+exit 0

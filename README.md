@@ -242,6 +242,43 @@ is safe; `--uninstall` reverses it, including the mode flag ponytail writes
 outside its own files. It needs `node` on the non-interactive shell's PATH — the
 shell that runs hooks, not your interactive one.
 
+It coexists with `link-skills.sh` in either order: a symlink that script already
+placed is left in place rather than replaced with a copy, so the skill keeps
+tracking `npx skills update`, and `--uninstall` removes only the copies this
+script made. What the per-user ponytail script adds beyond linked skills is the
+hooks and the `/ponytail*` commands.
+
+### ponytail for every account on a machine
+
+On a shared machine, to give **every** account the mode rather than each person
+installing it themselves:
+
+```bash
+sudo scripts/install-ponytail-machine.sh
+```
+
+It copies the hooks to `/usr/local/share/ponytail` (root-owned, world-readable)
+and registers them in Claude Code's managed settings —
+`/etc/claude-code/managed-settings.json` on Linux,
+`/Library/Application Support/ClaudeCode/managed-settings.json` on macOS. Other
+keys in that file are left alone, and `allowManagedHooksOnly` is deliberately
+not set: turning it on would silence every user and project hook on the machine.
+
+Two things to know before running it. **Managed settings are the admin tier** —
+accounts cannot remove these hooks from their own `settings.json`. They can still
+opt out, since that switch is read by ponytail's own scripts rather than by
+settings precedence: `PONYTAIL_DEFAULT_MODE=off`, `{"defaultMode":"off"}` in
+`~/.config/ponytail/config.json`, or `/ponytail off` for one session. And
+**skills and slash commands stay per-account**: Claude Code reads them from
+per-account directories only, with no managed equivalent, so this installs the
+hooks — which is what makes the mode persistent, since they inject the ruleset at
+session start and into every subagent. An account that also wants the
+`/ponytail*` commands runs the per-user script above.
+
+Mode state stays per-account either way: each account's active level lives in its
+own `~/.claude/.ponytail-active`. `--uninstall` removes the shared files and
+unregisters the hooks, leaving those per-account files alone.
+
 ### Plugin
 
 [`code-review`](https://github.com/anthropics/claude-code/tree/main/plugins/code-review)

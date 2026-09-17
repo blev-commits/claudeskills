@@ -80,7 +80,11 @@ if [ -f "$MANAGED" ]; then
 fi
 
 if [ "$mode" = install ]; then
-  install -d -m 755 "$SHARE/hooks" "$SHARE/skills" "$(dirname "$MANAGED")"
+  install -d -m 755 "$SHARE/hooks" "$SHARE/skills"
+  # Created only when absent: install -d also chmods an existing directory, and
+  # an admin who deliberately locked down the managed settings directory should
+  # not have it relaxed to 755 as a side effect of installing ponytail.
+  [ -d "$(dirname "$MANAGED")" ] || install -d -m 755 "$(dirname "$MANAGED")"
 
   install -m 755 "$REPO"/.claude/hooks/ponytail-*.js "$SHARE/hooks/"
   install -m 755 "$REPO/.claude/hooks/ponytail-statusline.sh" "$SHARE/hooks/"
@@ -94,15 +98,21 @@ if [ "$mode" = install ]; then
     cp -R "$REPO/.agents/skills/$s" "$SHARE/skills/$s"
   done
   chmod -R a+rX "$SHARE"
-else
-  rm -rf "$SHARE"
 fi
 
 # Only the hook entries are touched. allowManagedHooksOnly is deliberately left
 # alone: setting it would silence every user and project hook on the machine,
 # which is far more than installing ponytail.
+#
+# On uninstall this runs BEFORE $SHARE is deleted: if it failed after the files
+# were gone, every account on the machine would be left with managed hooks
+# pointing at scripts that no longer exist.
 MODE="$mode" SETTINGS="$MANAGED" HOOKS_DIR="$SHARE/hooks" \
   NODE_BIN="$NODE_BIN" node "$REPO/scripts/lib/merge-ponytail-hooks.js"
+
+if [ "$mode" = uninstall ]; then
+  rm -rf "$SHARE"
+fi
 
 if [ "$mode" = install ]; then
   cat <<EOF
@@ -114,7 +124,11 @@ ponytail installed machine-wide
 
 Every account gets the mode from its next session on. Each account that also
 wants the /ponytail* commands and the model-invocable skills runs:
-  $REPO/scripts/install-ponytail-user.sh
+  $REPO/scripts/install-ponytail-user.sh --no-hooks
+
+--no-hooks matters: the hooks above already run for every account, and Claude
+Code runs managed and per-user hooks additively, so registering them per-account
+as well would run each one twice per session.
 
 node must be on the non-interactive shell's PATH for every account, not just
 yours — that is the shell that runs hooks.

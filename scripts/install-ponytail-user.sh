@@ -29,11 +29,18 @@ if [ -z "$(env -i /bin/sh -c 'command -v node' 2>/dev/null)" ]; then
 fi
 
 mode=install
-case "${1:-}" in
-  --uninstall) mode=uninstall ;;
-  "") ;;
-  *) echo "usage: $(basename "$0") [--uninstall]" >&2; exit 2 ;;
-esac
+hooks=1
+for arg in "$@"; do
+  case "$arg" in
+    --uninstall) mode=uninstall ;;
+    # For accounts on a machine that already has install-ponytail-machine.sh:
+    # the hooks are registered there for everyone, so registering them per-user
+    # as well would run each one twice. Skips only the hooks -- the commands,
+    # skills and statusline badge are per-account and still installed.
+    --no-hooks) hooks=0 ;;
+    *) echo "usage: $(basename "$0") [--uninstall] [--no-hooks]" >&2; exit 2 ;;
+  esac
+done
 
 # Checked before anything is copied, so an unparseable settings.json leaves the
 # config directory exactly as it was rather than half-installed.
@@ -93,7 +100,7 @@ fi
 # left as shell syntax so a moved config directory keeps working. STATUSLINE=1
 # also wires the ponytail badge, which only makes sense per-user: in managed
 # settings it would override every account's own statusline.
-MODE="$mode" SETTINGS="$TARGET/settings.json" STATUSLINE=1 \
+MODE="$mode" SETTINGS="$TARGET/settings.json" STATUSLINE=1 HOOKS="$hooks" \
   HOOKS_DIR='${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks' \
   NODE_BIN="$NODE_BIN" node "$REPO/scripts/lib/merge-ponytail-hooks.js"
 

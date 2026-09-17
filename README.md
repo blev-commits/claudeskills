@@ -288,7 +288,17 @@ settings precedence: `PONYTAIL_DEFAULT_MODE=off`, `{"defaultMode":"off"}` in
 per-account directories only, with no managed equivalent, so this installs the
 hooks — which is what makes the mode persistent, since they inject the ruleset at
 session start and into every subagent. An account that also wants the
-`/ponytail*` commands runs the per-user script above.
+`/ponytail*` commands runs the per-user script above **with `--no-hooks`**:
+
+```bash
+scripts/install-ponytail-user.sh --no-hooks
+```
+
+Claude Code runs managed and per-user hooks additively, so without that flag an
+account on a machine that already has the machine-wide install runs all three
+hooks twice every session — the whole ruleset injected into context twice. The
+flag skips only the hook registration; the commands, skills and statusline badge
+are per-account and still installed, and `--uninstall --no-hooks` reverses it.
 
 Mode state stays per-account either way: each account's active level lives in its
 own `~/.claude/.ponytail-active`. `--uninstall` removes the shared files and

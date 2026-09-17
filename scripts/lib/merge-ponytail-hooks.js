@@ -23,6 +23,17 @@ if (!file || !hooksDir) {
   process.exit(2);
 }
 
+// Uninstalling what was never installed is a no-op, not an error. The install
+// side creates the settings directory before calling this; the uninstall side
+// does not, and must not -- removing ponytail should never create a system
+// directory. Without this the write below dies on ENOENT, which is the normal
+// case for the machine-wide installer: /etc/claude-code and its macOS
+// equivalent do not exist until something puts them there.
+if (uninstalling && !fs.existsSync(file)) {
+  console.log(`Nothing to remove, ${file} does not exist`);
+  process.exit(0);
+}
+
 // NODE_BIN is how the installer says which interpreter the hook shell can
 // actually reach: bare "node" when it is on that shell's PATH, an absolute path
 // when it is not (nvm, Homebrew on Apple Silicon, Nix). Quoted either way.
@@ -66,7 +77,16 @@ if (fs.existsSync(file)) {
 settings.hooks = settings.hooks || {};
 const changed = [];
 
-for (const [event, entry] of Object.entries(entries)) {
+// HOOKS=0 registers nothing and removes nothing, leaving only the statusLine
+// below. Claude Code runs managed and per-user hooks additively, so an account
+// on a machine that already has the machine-wide install would otherwise end up
+// running all three hooks twice per session -- the whole ruleset injected into
+// context twice. Uninstall honours the same gate, so a --no-hooks install is
+// reversed by a --no-hooks uninstall and never strips the machine's entries
+// from an account that cannot see them anyway.
+const doHooks = process.env.HOOKS !== '0';
+
+for (const [event, entry] of (doHooks ? Object.entries(entries) : [])) {
   const groups = Array.isArray(settings.hooks[event]) ? settings.hooks[event] : [];
   const before = JSON.stringify(settings.hooks[event] ?? null);
 

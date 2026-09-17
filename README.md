@@ -203,6 +203,28 @@ not usable: `PONYTAIL_HIDE_STATUS` is read by `getHideStatus()` in
 An installed copy is unaffected — `$CLAUDE_CONFIG_DIR/hooks` is not a working
 tree, so the hook behaves exactly as upstream intends there.
 
+### What the project hooks write outside this repo
+
+The ponytail wiring is project-scoped — the hooks only run in this repo — but the
+state they keep is not. All three of these live outside the working tree, so
+they persist after you leave and are shared with every other project:
+
+| Written | Where | When |
+| --- | --- | --- |
+| active mode | `$CLAUDE_CONFIG_DIR`/`~/.claude/.ponytail-active` | every session start, and every `/ponytail <level>` |
+| statusline nudge marker | `$CLAUDE_CONFIG_DIR`/`~/.claude/.ponytail-statusline-nudged` | first session start |
+| persisted default | `$XDG_CONFIG_HOME`/`~/.config/ponytail/config.json` | `/ponytail default <level>` only |
+
+The last one is the one to know about: **`/ponytail default ultra` typed in this
+repo sets your default for every project, permanently.** Plain `/ponytail lite`
+and friends are session-scoped and write only the mode flag. `ponytail-mode-tracker.js`
+carries a `LOCAL PATCH` that makes the confirmation say so and name the file when
+the hooks are running from a checkout — upstream's wording does not distinguish,
+because upstream only ever runs from a user-level install where machine-wide is
+the intent.
+
+Nothing here is written to the repo, so none of it shows up in `git status`.
+
 ### ponytail in every project
 
 The wiring above is project-level: ponytail is active when you work in this repo

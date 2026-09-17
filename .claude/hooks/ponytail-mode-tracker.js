@@ -2,7 +2,19 @@
 // ponytail — UserPromptSubmit hook to track which ponytail mode is active
 // Inspects user input for /ponytail commands and writes mode to flag file
 
-const { getDefaultMode, isDeactivationCommand, writeDefaultMode } = require('./ponytail-config');
+const fs = require('fs');
+const path = require('path');
+const {
+  getConfigPath,
+  getDefaultMode,
+  isDeactivationCommand,
+  writeDefaultMode,
+} = require('./ponytail-config');
+
+// LOCAL PATCH -- diverges from upstream DietrichGebert/ponytail. See README.
+// True when these hooks are running from this repo's checkout rather than from
+// a user-level install, i.e. when they are wired as PROJECT hooks.
+const inWorkingTree = fs.existsSync(path.join(__dirname, '..', '..', '.git'));
 const {
   clearMode,
   cursorRuleNotice,
@@ -60,7 +72,16 @@ function finish() {
           const dmode = parts[2];
           if (dmode === 'off' || dmode === 'lite' || dmode === 'full' || dmode === 'ultra') {
             writeDefaultMode(dmode);
-            writeHookOutput('UserPromptSubmit', dmode, 'PONYTAIL DEFAULT SET — new sessions start in ' + dmode + '.');
+            // LOCAL PATCH -- see above. ponytail is wired project-level in this
+            // repo, but the default it writes is machine-wide: getConfigPath()
+            // resolves outside the repo, so a prompt typed here silently changes
+            // every other project too. Upstream runs from a user-level install
+            // where that is the whole point; say so plainly when it is not.
+            const scopeNote = inWorkingTree
+              ? ' This is machine-wide, not only this repo — written to ' + getConfigPath() +
+                '. Session-only switches (/ponytail lite|full|ultra|off) do not persist.'
+              : '';
+            writeHookOutput('UserPromptSubmit', dmode, 'PONYTAIL DEFAULT SET — new sessions start in ' + dmode + '.' + scopeNote);
           }
           return; // don't fall through to the session-mode switch
         }

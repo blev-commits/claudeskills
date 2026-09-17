@@ -5,8 +5,9 @@ picked up automatically by sessions started in this repository.
 
 ## Installed skills
 
-All thirteen skills from [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill)
-(commit `e79ca9e`). Directory names match each skill's install name — the `name:`
+Twelve skills from [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill)
+(commit `e79ca9e`) — everything except `taste-skill-v1`, which duplicates the v2
+default and was deliberately left out. Directory names match each skill's install name — the `name:`
 field in its frontmatter, not the upstream folder name.
 
 ### Implementation skills (output code)
@@ -14,7 +15,6 @@ field in its frontmatter, not the upstream folder name.
 | Skill | Upstream folder | What it does |
 | --- | --- | --- |
 | `design-taste-frontend` | `taste-skill` | v2 default. Reads the brief, infers the design direction, ships landing pages / portfolios / redesigns that don't look templated. Audit-first on redesigns, strict pre-flight check. |
-| `design-taste-frontend-v1` | `taste-skill-v1` | The original v1, kept for projects that depend on its exact behavior. Overlaps heavily with v2 — see the note below. |
 | `gpt-taste` | `gpt-tasteskill` | Stricter GPT/Codex variant: true randomized layout variance, AIDA structure, wide editorial type, strict GSAP ScrollTriggers. |
 | `image-to-code` | `image-to-code-skill` | Image-first pipeline: generate section references, analyze them, then build the frontend to match. |
 | `redesign-existing-projects` | `redesign-skill` | Audits an existing UI for generic AI patterns, then fixes layout, spacing, hierarchy, and styling without breaking it. |
@@ -37,9 +37,6 @@ field in its frontmatter, not the upstream folder name.
 - The aesthetic skills are alternatives, not layers — `minimalist-ui`,
   `industrial-brutalist-ui`, and `high-end-visual-design` pull in opposite
   directions. Name the one you want for a given job.
-- `design-taste-frontend-v1` and `design-taste-frontend` describe the same
-  territory. Delete the v1 directory if its presence makes skill selection
-  ambiguous.
 - `design-taste-frontend` is large (~87 KB, ~1,200 lines); the rest range from
   8 KB to 44 KB.
 

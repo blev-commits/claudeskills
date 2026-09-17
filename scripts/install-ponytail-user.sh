@@ -81,8 +81,10 @@ fi
 
 # settings.json is edited rather than written: it is the user's own file and
 # usually already holds their hooks, plugins and preferences. The hooks path is
-# left as shell syntax so a moved config directory keeps working.
-MODE="$mode" SETTINGS="$TARGET/settings.json" \
+# left as shell syntax so a moved config directory keeps working. STATUSLINE=1
+# also wires the ponytail badge, which only makes sense per-user: in managed
+# settings it would override every account's own statusline.
+MODE="$mode" SETTINGS="$TARGET/settings.json" STATUSLINE=1 \
   HOOKS_DIR='${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hooks' \
   node "$REPO/scripts/lib/merge-ponytail-hooks.js"
 

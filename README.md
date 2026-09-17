@@ -203,27 +203,35 @@ not usable: `PONYTAIL_HIDE_STATUS` is read by `getHideStatus()` in
 An installed copy is unaffected — `$CLAUDE_CONFIG_DIR/hooks` is not a working
 tree, so the hook behaves exactly as upstream intends there.
 
-### What the project hooks write outside this repo
+### Where ponytail keeps its state
 
-The ponytail wiring is project-scoped — the hooks only run in this repo — but the
-state they keep is not. All three of these live outside the working tree, so
-they persist after you leave and are shared with every other project:
+The hooks are wired project-level, so they only run in this repo — and their
+state is scoped to match. Everything lives in `.claude/.ponytail/`, which is
+gitignored because it is per-developer runtime state, not shared configuration:
 
-| Written | Where | When |
+| File | Holds | Written |
 | --- | --- | --- |
-| active mode | `$CLAUDE_CONFIG_DIR`/`~/.claude/.ponytail-active` | every session start, and every `/ponytail <level>` |
-| statusline nudge marker | `$CLAUDE_CONFIG_DIR`/`~/.claude/.ponytail-statusline-nudged` | first session start |
-| persisted default | `$XDG_CONFIG_HOME`/`~/.config/ponytail/config.json` | `/ponytail default <level>` only |
+| `active` | current mode | every session start, and every `/ponytail <level>` |
+| `statusline-nudged` | statusline nudge already shown | first session start |
+| `config.json` | this checkout's default mode | `/ponytail default <level>` only |
 
-The last one is the one to know about: **`/ponytail default ultra` typed in this
-repo sets your default for every project, permanently.** Plain `/ponytail lite`
-and friends are session-scoped and write only the mode flag. `ponytail-mode-tracker.js`
-carries a `LOCAL PATCH` that makes the confirmation say so and name the file when
-the hooks are running from a checkout — upstream's wording does not distinguish,
-because upstream only ever runs from a user-level install where machine-wide is
-the intent.
+So `/ponytail default ultra` here sets the default **for this repo**, and leaves
+every other project alone. Nothing is written to `~/.claude` or `~/.config`.
 
-Nothing here is written to the repo, so none of it shows up in `git status`.
+This is a `LOCAL PATCH` across `ponytail-config.js`, `ponytail-runtime.js` and
+`ponytail-activate.js`. Upstream keeps all three in the user's config directories,
+which is right for the user-level install it was built for and wrong for hooks
+vendored into one repo — a default set in a single checkout would follow you into
+every other project, invisibly, since none of it shows up in `git status`.
+
+The statusline scripts read the repo-local flag too, via the `workspace.project_dir`
+Claude Code passes them on stdin, so the badge tracks the mode you set here. They
+fall back to the user-level flag when there is no stdin, no `project_dir`, or no
+repo-local flag.
+
+**A user-level install is unaffected by any of this.** `getProjectStateDir()`
+returns null when the hooks are not running from a checkout, so every path stays
+exactly as upstream has it.
 
 ### ponytail in every project
 

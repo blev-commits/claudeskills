@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { getDefaultMode, getClaudeDir, isShellSafe } = require('./ponytail-config');
+const { getDefaultMode, getClaudeDir, getProjectStateDir, isShellSafe } = require('./ponytail-config');
 const { getPonytailInstructions } = require('./ponytail-instructions');
 const {
   clearMode,
@@ -95,7 +95,14 @@ if (!isCodex && !isCopilot && !isCursor) try {
   // Nudge at most once — the flag file marks that the user has already seen
   // (and implicitly declined) the statusline setup offer. Repeating it every
   // session start turns a helpful hint into a nag.
-  const nudgeFlagPath = path.join(claudeDir, '.ponytail-statusline-nudged');
+  // LOCAL PATCH -- the nudge marker follows the project state dir when these
+  // hooks run from a checkout, so a repo does not leave a marker in the user's
+  // config dir. settingsPath above deliberately stays global: it reads the
+  // user's real settings, it is not our state.
+  const nudgeFlagPath = path.join(
+    getProjectStateDir() || claudeDir,
+    getProjectStateDir() ? 'statusline-nudged' : '.ponytail-statusline-nudged'
+  );
   if (!hasStatusline && !fs.existsSync(nudgeFlagPath)) {
     try { fs.writeFileSync(nudgeFlagPath, ''); } catch (e) { /* best-effort */ }
     const isWindows = process.platform === 'win32';

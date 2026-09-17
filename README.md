@@ -165,6 +165,23 @@ version-controlled here.
 
 Slash commands live in `.claude/commands/` (ponytail).
 
+### ponytail in every project
+
+The wiring above is project-level: ponytail is active when you work in this repo
+and nowhere else. To install it for your user instead — every project on the
+machine — run:
+
+```bash
+scripts/install-ponytail-user.sh
+```
+
+It copies ponytail's skills, hooks and commands into `$CLAUDE_CONFIG_DIR` (or
+`~/.claude`) and adds the same three hook entries to that directory's
+`settings.json`, leaving your own hooks and preferences untouched. Re-running it
+is safe; `--uninstall` reverses it, including the mode flag ponytail writes
+outside its own files. It needs `node` on the non-interactive shell's PATH — the
+shell that runs hooks, not your interactive one.
+
 ### Plugin
 
 [`code-review`](https://github.com/anthropics/claude-code/tree/main/plugins/code-review)

@@ -23,6 +23,17 @@ if (!file || !hooksDir) {
   process.exit(2);
 }
 
+// Uninstalling what was never installed is a no-op, not an error. The install
+// side creates the settings directory before calling this; the uninstall side
+// does not, and must not -- removing ponytail should never create a system
+// directory. Without this the write below dies on ENOENT, which is the normal
+// case for the machine-wide installer: /etc/claude-code and its macOS
+// equivalent do not exist until something puts them there.
+if (uninstalling && !fs.existsSync(file)) {
+  console.log(`Nothing to remove, ${file} does not exist`);
+  process.exit(0);
+}
+
 const isPonytail = (h) => typeof h.command === 'string' && /ponytail-[a-z-]+\.js/.test(h.command);
 const hook = (script, statusMessage) => ({
   type: 'command',

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { getClaudeDir, getConfigDir } = require('./ponytail-config');
+const { getClaudeDir, getConfigDir, getProjectStateDir } = require('./ponytail-config');
 
 const STATE_FILE = '.ponytail-active';
 
@@ -36,7 +36,20 @@ if (isCopilot) stateDir = process.env.COPILOT_PLUGIN_DATA || getClaudeDir();
 if (isQoder) stateDir = path.join(os.homedir(), '.qoder');
 if (isCursor) stateDir = path.join(os.homedir(), '.cursor');
 
-const statePath = path.join(stateDir, STATE_FILE);
+// LOCAL PATCH -- diverges from upstream DietrichGebert/ponytail. See README.
+// Last word, after the per-host data dirs: when these hooks run from a repo
+// checkout they are project hooks, so the active-mode flag stays in the repo
+// instead of in a shared user directory. Null for a user-level install, where
+// every branch above applies unchanged.
+const projectStateDir = getProjectStateDir();
+if (projectStateDir) stateDir = projectStateDir;
+
+// LOCAL PATCH -- inside the repo's own .ponytail/ directory the leading-dot,
+// ponytail-prefixed filename is redundant; the statusline scripts look for
+// .claude/.ponytail/active. User-level installs keep upstream's filename.
+const statePath = projectStateDir
+  ? path.join(stateDir, 'active')
+  : path.join(stateDir, STATE_FILE);
 
 function setMode(mode) {
   fs.mkdirSync(path.dirname(statePath), { recursive: true });

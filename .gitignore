@@ -1,3 +1,9 @@
+# ponytail runtime state. The hooks are wired project-level, so their state
+# lives in the repo rather than the user's config dir -- but it is per-developer
+# (active mode, the statusline nudge marker, this checkout's default), not
+# shared configuration.
+.claude/.ponytail/
+
 # Impeccable is installed at the user level (~/.claude/skills/impeccable), not
 # in this repo; only the shared design hook in .claude/settings.json is tracked.
 # These patterns keep a project-level install out of git if one is ever added.

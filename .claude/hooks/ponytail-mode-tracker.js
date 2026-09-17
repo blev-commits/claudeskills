@@ -78,8 +78,9 @@ function finish() {
             // every other project too. Upstream runs from a user-level install
             // where that is the whole point; say so plainly when it is not.
             const scopeNote = inWorkingTree
-              ? ' This is machine-wide, not only this repo — written to ' + getConfigPath() +
-                '. Session-only switches (/ponytail lite|full|ultra|off) do not persist.'
+              ? ' Scoped to this repo — written to ' + getConfigPath() +
+                ', which is gitignored and does not affect other projects. Session-only ' +
+                'switches (/ponytail lite|full|ultra|off) do not persist at all.'
               : '';
             writeHookOutput('UserPromptSubmit', dmode, 'PONYTAIL DEFAULT SET — new sessions start in ' + dmode + '.' + scopeNote);
           }

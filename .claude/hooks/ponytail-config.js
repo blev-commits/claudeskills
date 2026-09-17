@@ -51,7 +51,24 @@ function isShellSafe(p) {
   return typeof p === 'string' && /^[A-Za-z0-9 _.\-:/\\~]+$/.test(p);
 }
 
+// LOCAL PATCH -- diverges from upstream DietrichGebert/ponytail. See README.
+// Upstream is always a user-level install, so all of its state belongs in the
+// user's config dirs. Vendored here the hooks are wired as PROJECT hooks: they
+// run only in this repo, so their state belongs in this repo too, rather than
+// leaking a default set here into every other project. Returns null when these
+// hooks are NOT running from a checkout (i.e. a normal user-level install), and
+// upstream's own paths are used unchanged.
+function getProjectStateDir() {
+  const repoRoot = path.join(__dirname, '..', '..');
+  if (!fs.existsSync(path.join(repoRoot, '.git'))) return null;
+  return path.join(__dirname, '..', '.ponytail');
+}
+
 function getConfigDir() {
+  // LOCAL PATCH -- keep a project checkout's persisted default inside the repo.
+  const projectDir = getProjectStateDir();
+  if (projectDir) return projectDir;
+
   if (process.env.XDG_CONFIG_HOME) {
     return path.join(process.env.XDG_CONFIG_HOME, 'ponytail');
   }
@@ -152,6 +169,7 @@ function writeDefaultMode(mode) {
 
 module.exports = {
   DEFAULT_MODE,
+  getProjectStateDir,
   VALID_MODES,
   RUNTIME_MODES,
   getDefaultMode,

@@ -72,7 +72,16 @@ if (fs.existsSync(file)) {
 settings.hooks = settings.hooks || {};
 const changed = [];
 
-for (const [event, entry] of Object.entries(entries)) {
+// HOOKS=0 registers nothing and removes nothing, leaving only the statusLine
+// below. Claude Code runs managed and per-user hooks additively, so an account
+// on a machine that already has the machine-wide install would otherwise end up
+// running all three hooks twice per session -- the whole ruleset injected into
+// context twice. Uninstall honours the same gate, so a --no-hooks install is
+// reversed by a --no-hooks uninstall and never strips the machine's entries
+// from an account that cannot see them anyway.
+const doHooks = process.env.HOOKS !== '0';
+
+for (const [event, entry] of (doHooks ? Object.entries(entries) : [])) {
   const groups = Array.isArray(settings.hooks[event]) ? settings.hooks[event] : [];
 
   if (uninstalling) {

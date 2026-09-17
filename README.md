@@ -203,6 +203,19 @@ claude plugin install code-review@claude-code-plugins
 `design-taste-frontend` against an invented brief, with a note on which of the
 skill's rules visibly changed the output. One file, opens in a browser.
 
+## Using them outside this repo
+
+The skills load automatically in sessions started here. To load them in every
+project on a machine, link them into the user-level directories:
+
+```bash
+sh scripts/link-skills.sh
+```
+
+Symlinks, so updates in this repo reach the user-level install; re-runnable,
+and it leaves anything already installed alone. The links break if the clone
+moves.
+
 ## Updating
 
 Every collection is tracked in `skills-lock.json`, so the CLI can refresh them

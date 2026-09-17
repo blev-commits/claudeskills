@@ -81,6 +81,23 @@ for (const [event, entry] of Object.entries(entries)) {
 
 if (uninstalling && !Object.keys(settings.hooks).length) delete settings.hooks;
 
+// statusLine: the ponytail badge. Only ever touch an entry that is ours -- a
+// statusLine the user set themselves is left exactly as it is, and uninstall
+// removes only ponytail's own.
+const ourStatusLine = `bash "${hooksDir}/ponytail-statusline.sh"`;
+const isOurStatusLine = (s) =>
+  s && typeof s.command === 'string' && /ponytail-statusline\.(sh|ps1)/.test(s.command);
+
+if (uninstalling) {
+  if (isOurStatusLine(settings.statusLine)) {
+    delete settings.statusLine;
+    changed.push('statusLine');
+  }
+} else if (!settings.statusLine) {
+  settings.statusLine = { type: 'command', command: ourStatusLine };
+  changed.push('statusLine');
+}
+
 fs.writeFileSync(file, `${JSON.stringify(settings, null, 2)}\n`);
 
 const verb = uninstalling ? 'Removed' : 'Registered';

@@ -93,6 +93,7 @@ ponytail installed for this user in $TARGET
   skills:   ${#SKILLS[@]} (ponytail, -review, -audit, -debt, -gain, -help)
   commands: /ponytail, /ponytail-review, /ponytail-audit, /ponytail-debt, /ponytail-gain, /ponytail-help
   hooks:    SessionStart, SubagentStart, UserPromptSubmit
+  status:   [PONYTAIL] badge, unless you already had a statusLine
 
 Active in every project from the next session on. Turn it off with
 /ponytail off, or permanently with PONYTAIL_DEFAULT_MODE=off in your
@@ -101,5 +102,5 @@ EOF
 else
   echo
   echo "ponytail removed from $TARGET"
-  echo "A statusLine entry, if you accepted that setup offer, is left alone — it is yours."
+  echo "A statusLine you set yourself is left alone — only ponytail's own entry is removed."
 fi

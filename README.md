@@ -3,7 +3,29 @@
 Personal collection of Claude Code skills. Anything under `.claude/skills/` is
 picked up automatically by sessions started in this repository.
 
-## Installed skills
+**45 skills from four upstream collections**, plus project hooks, slash commands
+and one plugin. Each collection was installed separately; this file is the single
+inventory of what ended up here.
+
+| Collection | Skills | Layout |
+| --- | --- | --- |
+| [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) — design & image generation | 12 | real dirs |
+| [emilkowalski/skills](https://github.com/emilkowalski/skills) — animation & design engineering | 13 | symlinks |
+| [obra/superpowers](https://github.com/obra/superpowers) — development methodology | 14 | symlinks |
+| [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) — anti-over-engineering | 6 | symlinks |
+
+Two install layouts coexist. Skills installed with the `skills` CLI live in
+`.agents/skills/<name>/` (readable by other agents too) with a symlink from
+`.claude/skills/<name>`; taste-skill was copied in as real directories. Both are
+picked up identically. `skills-lock.json` pins the CLI-installed ones by content
+hash; the taste-skill set is not tracked there.
+
+Skills marked **opt-in** declare `disable-model-invocation: true` — Claude will
+not reach for them on its own, so invoke them by name (`/prototype`).
+
+---
+
+## Design & image generation — taste-skill
 
 Twelve skills from [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill)
 (commit `e79ca9e`) — everything except `taste-skill-v1`, which duplicates the v2
@@ -32,15 +54,116 @@ field in its frontmatter, not the upstream folder name.
 | `imagegen-frontend-mobile` | `imagegen-frontend-mobile` | iOS / Android / cross-platform screens and flows in phone mockups. |
 | `brandkit` | `brandkit` | Brand-guideline boards, logo systems, identity decks, visual-world presentations. |
 
-### Notes
+---
 
-- The aesthetic skills are alternatives, not layers — `minimalist-ui`,
+## Animation & design engineering — emilkowalski
+
+Thirteen skills from [emilkowalski/skills](https://github.com/emilkowalski/skills),
+installed with `npx skills@latest add emilkowalski/skills`.
+
+| Skill | What it does |
+| --- | --- |
+| `emil-design-eng` | The umbrella skill: UI polish, component design, animation decisions, and the invisible details that make software feel considered. |
+| `animate` | Builds a web animation from scratch, deciding in order: whether to animate at all, purpose, tool, properties, curve, duration, interruption, exit. |
+| `animate-expo` | The same bar for React Native / Expo — gestures, sheets, haptics, screen transitions, keeping motion off the JS thread. |
+| `review-animations` | **Opt-in.** Reviews existing motion against a strict craft bar. Defaults to flagging; approval is earned. |
+| `improve-animations` | Audits all motion in a codebase and emits prioritized, self-contained plans another agent can execute. Read-only. |
+| `find-animation-opportunities` | Finds places that should animate but don't — and rejects the ones that shouldn't. Read-only. |
+| `animation-vocabulary` | Reverse glossary: turns "the bouncy thing when a popover opens" into the actual term, so you can ask for it precisely. |
+| `apple-design` | Apple's interface and motion principles distilled from WWDC talks, translated for the web. |
+| `mobile-native` | The small fixes that separate a website from an app: sticky hover, tap highlights, the 100vh bug, inputs that zoom, safe areas. |
+| `pick-ui-library` | **Opt-in.** Picks a library from a curated list instead of hand-rolling a toast or installing something abandoned. |
+| `prototype` | **Opt-in.** Builds several genuinely different versions of a UI piece behind a picker so you can flip through them live. |
+| `ask-sonner` | Working guide to Sonner (the author's toast library): setup, styling, recipes, common fixes. |
+| `write-swift` | Modern Swift — value types, Swift 6 concurrency, generics, performance, Swift Testing. |
+
+---
+
+## Development methodology — superpowers
+
+Fourteen skills from [obra/superpowers](https://github.com/obra/superpowers).
+These shape *how* work gets done rather than what it looks like, so several are
+written to fire automatically at the relevant moment.
+
+| Skill | What it does |
+| --- | --- |
+| `using-superpowers` | Entry point — establishes how to find and invoke the rest. |
+| `brainstorming` | Explores intent and requirements before any creative or implementation work. |
+| `writing-plans` | Turns a spec into a multi-step plan before touching code. |
+| `executing-plans` | Executes a written plan in a separate session with review checkpoints. |
+| `subagent-driven-development` | Executes plans with independent tasks in the current session. |
+| `dispatching-parallel-agents` | For 2+ independent tasks with no shared state or ordering. |
+| `test-driven-development` | Tests before implementation, for features and bugfixes. |
+| `systematic-debugging` | Root-causes a bug or test failure before proposing fixes. |
+| `verification-before-completion` | Requires running verification and reading output before claiming done. |
+| `requesting-code-review` | Verifies work against requirements before merging. |
+| `receiving-code-review` | Handles review feedback with technical rigor rather than reflexive agreement. |
+| `finishing-a-development-branch` | Decides how to integrate work once tests pass. |
+| `using-git-worktrees` | Ensures an isolated workspace before feature work. |
+| `writing-skills` | Creating, editing, and verifying skills themselves. |
+
+---
+
+## Anti-over-engineering — ponytail
+
+Six skills from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail).
+A persistent mode plus one-shot tools that push toward the smallest thing that works.
+
+| Skill | What it does |
+| --- | --- |
+| `ponytail` | The mode. Forces the laziest solution that actually works — questions whether the task needs to exist (YAGNI), reaches for stdlib over dependencies. |
+| `ponytail-review` | Reviews a diff exclusively for over-engineering: reinvented stdlib, speculative abstractions, dead flexibility. |
+| `ponytail-audit` | Same lens across the whole repo — a ranked list of what to delete or simplify. |
+| `ponytail-debt` | Harvests `ponytail:` comments into a debt ledger so deliberate shortcuts get tracked. |
+| `ponytail-gain` | One-shot scoreboard of ponytail's measured impact. |
+| `ponytail-help` | Quick-reference card for ponytail modes and commands. |
+
+---
+
+## Overlaps worth knowing
+
+Four collections installed independently means some skills compete. Name the one
+you want rather than assuming Claude picks correctly:
+
+- **Aesthetic direction is exclusive, not layered.** `minimalist-ui`,
   `industrial-brutalist-ui`, and `high-end-visual-design` pull in opposite
-  directions. Name the one you want for a given job.
-- `design-taste-frontend` is large (~87 KB, ~1,200 lines); the rest range from
+  directions. So do `design-taste-frontend` and `gpt-taste` (same job, different
+  strictness).
+- **Two design philosophies.** `design-taste-frontend` (taste-skill) and
+  `emil-design-eng` (emilkowalski) both claim general frontend design taste.
+  The first is brief-driven and layout-focused; the second is polish- and
+  motion-focused.
+- **Two review lenses.** `ponytail-review` hunts over-engineering,
+  `review-animations` hunts motion craft, and the `code-review` plugin hunts
+  correctness. They do not overlap in findings, but all three answer "review this".
+- **Restraint vs. maximalism.** `ponytail` pushes for the smallest solution;
+  the taste and animation skills add polish and motion. Running both at once
+  sends mixed signals — pick per task.
+- `design-taste-frontend` is large (~87 KB, ~1,200 lines); most others range from
   8 KB to 44 KB.
 
-## Plugins
+## Hooks, commands and plugins
+
+`.claude/settings.json` wires up hooks from several collections. They coexist —
+each is additive and independently guarded:
+
+| Event | Hook | From |
+| --- | --- | --- |
+| `SessionStart` | `run-hook.cmd session-start` | superpowers |
+| `SessionStart` | `ponytail-activate.js` | ponytail |
+| `SubagentStart` | `ponytail-subagent.js` | ponytail |
+| `UserPromptSubmit` | `ponytail-mode-tracker.js` | ponytail |
+| `PostToolUse`, `Stop` | `impeccable` | Impeccable (user-level) |
+
+**The Impeccable hooks are the exception worth noting.** That skill is *not* in
+this repo — it is installed at the user level (`~/.claude/skills/impeccable/`).
+The hooks are guarded with a file-existence check, so they silently no-op for
+anyone who hasn't installed it separately. Only the shared hook config is
+version-controlled here.
+
+Slash commands live in `.claude/commands/` (ponytail).
+
+### Plugin
 
 [`code-review`](https://github.com/anthropics/claude-code/tree/main/plugins/code-review)
 from the `claude-code-plugins` marketplace (`anthropics/claude-code`) is enabled for this
@@ -57,7 +180,14 @@ claude plugin install code-review@claude-code-plugins
 
 ## Updating
 
-Re-copy each `skills/<folder>/` from upstream into
+For the CLI-installed collections (emilkowalski, superpowers, ponytail), re-run
+the installer — it rewrites `.agents/skills/` and refreshes `skills-lock.json`:
+
+```bash
+npx skills@latest add emilkowalski/skills
+```
+
+For taste-skill, re-copy each `skills/<folder>/` from upstream into
 `.claude/skills/<install-name>/`, or use the upstream CLI:
 
 ```bash

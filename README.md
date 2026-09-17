@@ -182,6 +182,12 @@ is safe; `--uninstall` reverses it, including the mode flag ponytail writes
 outside its own files. It needs `node` on the non-interactive shell's PATH — the
 shell that runs hooks, not your interactive one.
 
+It coexists with `link-skills.sh` in either order: a symlink that script already
+placed is left in place rather than replaced with a copy, so the skill keeps
+tracking `npx skills update`, and `--uninstall` removes only the copies this
+script made. What the per-user ponytail script adds beyond linked skills is the
+hooks and the `/ponytail*` commands.
+
 ### ponytail for every account on a machine
 
 On a shared machine, to give **every** account the mode rather than each person

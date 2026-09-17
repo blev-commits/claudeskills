@@ -54,14 +54,26 @@ if [ "$mode" = install ]; then
   # may move or be deleted, and ponytail-instructions.js reads the ruleset from
   # ../skills/ponytail/SKILL.md relative to the hooks directory. Copying keeps
   # the hooks emitting the real skill body instead of their terser fallback.
+  #
+  # A symlink already there is left alone: link-skills.sh puts one per skill so
+  # `npx skills update` in the repo reaches the user-level install, and the
+  # hooks read the ruleset through it just as well. Replacing it with a copy
+  # would quietly cut that skill off from updates.
   for s in "${SKILLS[@]}"; do
+    if [ -L "$TARGET/skills/$s" ] && [ -f "$TARGET/skills/$s/SKILL.md" ]; then
+      continue
+    fi
     rm -rf "$TARGET/skills/$s"
     cp -R "$REPO/.agents/skills/$s" "$TARGET/skills/$s"
   done
 else
   rm -f "$TARGET"/hooks/ponytail-*.js "$TARGET"/hooks/ponytail-statusline.sh "$TARGET"/hooks/ponytail-statusline.ps1
   rm -f "$TARGET"/commands/ponytail*.md
-  for s in "${SKILLS[@]}"; do rm -rf "$TARGET/skills/$s"; done
+  # Only copies this script made are removed. A symlink belongs to
+  # link-skills.sh, which manages all 45 skills, not just ponytail's.
+  for s in "${SKILLS[@]}"; do
+    [ -L "$TARGET/skills/$s" ] || rm -rf "$TARGET/skills/$s"
+  done
   # State ponytail writes outside its own files: the active-mode flag the
   # statusline reads, and the marker for the statusline setup offer.
   rm -f "$TARGET/.ponytail-active" "$TARGET/.ponytail-statusline-nudged"

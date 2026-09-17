@@ -247,8 +247,15 @@ It copies ponytail's skills, hooks and commands into `$CLAUDE_CONFIG_DIR` (or
 `~/.claude`) and adds the same three hook entries to that directory's
 `settings.json`, leaving your own hooks and preferences untouched. Re-running it
 is safe; `--uninstall` reverses it, including the mode flag ponytail writes
-outside its own files. It needs `node` on the non-interactive shell's PATH — the
-shell that runs hooks, not your interactive one.
+outside its own files.
+
+Hooks run in a non-interactive shell, whose PATH is narrower than yours under
+nvm, Homebrew on Apple Silicon or Nix — `node` being on *your* PATH does not
+mean the hooks can reach it. Both installers check
+(`env -i /bin/sh -c 'command -v node'`) and write the absolute interpreter path
+into the hook commands when they have to, so no symlink into `/usr/local/bin`
+is needed. Re-running an installer also repairs an entry that has gone stale,
+such as one whose absolute path a Node upgrade moved.
 
 It coexists with `link-skills.sh` in either order: a symlink that script already
 placed is left in place rather than replaced with a copy, so the skill keeps

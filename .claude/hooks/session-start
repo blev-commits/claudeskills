@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# SessionStart hook: inject the superpowers "using-superpowers" skill.
+#
+# Adapted from https://github.com/obra/superpowers (hooks/session-start) for a
+# skills-collection repo: superpowers is installed here as plain skills rather
+# than as a Claude Code plugin, so the skill is read from the repo's skill
+# directories instead of ${CLAUDE_PLUGIN_ROOT}.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
+
+# Skill sources live in .agents/skills/; .claude/skills/ holds symlinks to them.
+skill_file=""
+for candidate in \
+    "${PROJECT_DIR}/.agents/skills/using-superpowers/SKILL.md" \
+    "${PROJECT_DIR}/.claude/skills/using-superpowers/SKILL.md"; do
+    if [ -r "$candidate" ]; then
+        skill_file="$candidate"
+        break
+    fi
+done
+
+# Skill not installed (or removed) — stay silent rather than break the session.
+if [ -z "$skill_file" ]; then
+    exit 0
+fi
+
+using_superpowers_content=$(cat "$skill_file")
+
+# Escape string for JSON embedding using bash parameter substitution.
+# Each ${s//old/new} is a single C-level pass - orders of magnitude
+# faster than a character-by-character loop.
+escape_for_json() {
+    local s="$1"
+    s="${s//\\/\\\\}"
+    s="${s//\"/\\\"}"
+    s="${s//$'\n'/\\n}"
+    s="${s//$'\r'/\\r}"
+    s="${s//$'\t'/\\t}"
+    printf '%s' "$s"
+}
+
+using_superpowers_escaped=$(escape_for_json "$using_superpowers_content")
+session_context="<EXTREMELY_IMPORTANT>\nYou have superpowers.\n\n**Below is the full content of your 'using-superpowers' skill - your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\nNote: these skills are installed as project skills, not as the superpowers plugin, so invoke them by bare name with the Skill tool ('brainstorming'), not with the 'superpowers:' prefix the skill text below uses.\n\n${using_superpowers_escaped}\n</EXTREMELY_IMPORTANT>"
+
+# Output context injection as JSON.
+# Cursor hooks expect additional_context (snake_case).
+# Copilot CLI (v1.0.11+) and other SDK harnesses expect additionalContext (top-level).
+# Claude Code expects hookSpecificOutput.additionalContext (nested) — the default
+# here, since .claude/settings.json hooks only ever fire in Claude Code.
+#
+# Uses printf instead of heredoc to work around bash 5.3+ heredoc hang.
+# See: https://github.com/obra/superpowers/issues/571
+if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+  printf '{\n  "additional_context": "%s"\n}\n' "$session_context" | cat
+elif [ -n "${COPILOT_CLI:-}" ]; then
+  printf '{\n  "additionalContext": "%s"\n}\n' "$session_context" | cat
+else
+  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context" | cat
+fi
+
+exit 0

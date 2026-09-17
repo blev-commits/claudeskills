@@ -55,6 +55,37 @@ if [ -z "$(env -i /bin/sh -c 'command -v node' 2>/dev/null)" ]; then
   NODE_BIN="$(command -v node)"
 fi
 
+# That absolute path goes into root-owned managed settings, which every account
+# runs at every session start and cannot override. A node owned by a regular
+# user -- the normal case under nvm, and what sudo hands us when it keeps the
+# caller's PATH -- would let that user run code in everyone else's sessions, as
+# them. Refuse rather than warn: the whole point of the managed tier is that
+# users cannot opt out of what is registered here.
+if [ "$NODE_BIN" != node ]; then
+  # Resolve symlinks first: a root-owned link pointing at a user-owned binary
+  # passes an un-dereferenced check while still running the user's code, and
+  # /usr/local/bin/node is usually exactly that link. Resolved with readlink,
+  # never by executing $NODE_BIN -- at this point we are root and it is the
+  # thing under suspicion.
+  real_node="$(readlink -f "$NODE_BIN" 2>/dev/null || echo "$NODE_BIN")"
+  # The directory counts too: a root-owned binary in a user-owned directory can
+  # simply be replaced.
+  for p in "$real_node" "$(dirname "$real_node")"; do
+    uid="$(stat -L -c %u "$p" 2>/dev/null || stat -L -f %u "$p" 2>/dev/null || echo unknown)"
+    if [ "$uid" != 0 ]; then
+      echo "error: $p is not root-owned (uid $uid)." >&2
+      echo "       Every account runs this interpreter at session start and cannot" >&2
+      echo "       override it, so whoever owns that path could execute code in" >&2
+      echo "       their sessions, as them." >&2
+      echo "       Install node system-wide -- the binary AND its directory owned" >&2
+      echo "       by root -- then re-run. A symlink from a root-owned directory" >&2
+      echo "       does not help while the target stays user-owned." >&2
+      echo "       The per-user installer has no such restriction." >&2
+      exit 1
+    fi
+  done
+fi
+
 # Every account's sessions will run these hooks, so the files and the managed
 # settings must be root-owned. Without root the install would either fail
 # halfway or land somewhere users could edit.

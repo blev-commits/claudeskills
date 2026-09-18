@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**45 skills from four upstream collections**, plus project hooks, slash commands
+**55 skills: 45 from four upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -15,9 +15,10 @@ inventory of what ended up here.
 | [emilkowalski/skills](https://github.com/emilkowalski/skills) — animation & design engineering | 13 | symlinks |
 | [obra/superpowers](https://github.com/obra/superpowers) — development methodology | 14 | symlinks |
 | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) — anti-over-engineering | 6 | symlinks |
+| Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins all 45 to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 45 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -119,6 +120,26 @@ A persistent mode plus one-shot tools that push toward the smallest thing that w
 | `ponytail-debt` | Harvests `ponytail:` comments into a debt ledger so deliberate shortcuts get tracked. |
 | `ponytail-gain` | One-shot scoreboard of ponytail's measured impact. |
 | `ponytail-help` | Quick-reference card for ponytail modes and commands. |
+
+---
+
+## Product design workflow — own
+
+Ten skills written for this collection, not installed from upstream, so they are
+not in `skills-lock.json`.
+
+| Skill | What it does |
+| --- | --- |
+| `design-brief` | Turns a feature idea or ticket into a brief that defines the problem and scope before design starts. |
+| `user-flow-mapper` | Maps every step, screen, and decision point of a flow. |
+| `ux-pattern-finder` | Finds established UX patterns for a design problem and renders an HTML mockup of each. |
+| `competitor-research` | Tears down competitor screenshots into patterns, decisions, and trade-offs. Ships a Notion teardown in `research/`. |
+| `error-state-generator` | Lists the error and edge-case states a screen or flow is missing. |
+| `copy-writer` | Writes UI copy: labels, errors, empty states, tooltips, confirmations. |
+| `ui-feedback` | Specific, actionable critique of a UI design or screenshot. |
+| `design-review-prep` | Structures talking points and anticipates questions before a design review. |
+| `stakeholder-explainer` | Explains a design decision to a PM, engineer, executive, or client. |
+| `handoff-notes` | Developer handoff notes: behavior, states, and edge cases not visible in Figma. |
 
 ---
 

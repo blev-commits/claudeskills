@@ -22,6 +22,7 @@ for dir in "$src"/*/; do
   done
 done
 
-broken=$(find "$HOME/.agents/skills" "$HOME/.claude/skills" -maxdepth 1 -xtype l | wc -l)
+# -L follows links, so only dangling ones still test as -type l. Portable, unlike GNU -xtype.
+broken=$(find -L "$HOME/.agents/skills" "$HOME/.claude/skills" -maxdepth 1 -type l | wc -l | tr -d " ")
 echo "linked $linked, skipped $skipped already present, broken $broken"
 [ "$broken" -eq 0 ]

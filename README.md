@@ -348,8 +348,24 @@ skill's rules visibly changed the output. One file, opens in a browser.
 
 ## Using them outside this repo
 
-The skills load automatically in sessions started here. To load them in every
-project on a machine, link them into the user-level directories:
+The skills load automatically in sessions started here. There are two ways to
+reach every other project. Pick one: with both, Claude Code may list each skill
+twice.
+
+**claude.ai account (what I use).** Upload each skill at claude.ai → Customize →
+Skills. Account skills load in cloud sessions and Cowork, and sync down to
+Claude Code on every machine you sign in on, into `~/.claude/skills/synced/`
+(needs Claude Code 2.1.273 or later and a `/login` session). One zip per skill,
+with the skill folder at the root of the zip; the upload form takes 20 at a time:
+
+```bash
+mkdir -p /tmp/skill-zips
+cd .agents/skills && for n in */; do zip -qr "/tmp/skill-zips/${n%/}.zip" "$n" -x '*.DS_Store'; done
+```
+
+**Local symlinks.** For a machine that shouldn't use account skills, or for
+agents that read `~/.agents/skills` (Cursor, for one), link them into the
+user-level directories:
 
 ```bash
 sh scripts/link-skills.sh
@@ -379,3 +395,6 @@ npx skills@latest add <owner>/<repo> -s <install-name> -a universal -a claude-co
 
 Install names are the `name:` field in a skill's frontmatter, which is not
 always its upstream folder name.
+
+Account copies do not follow this repo. After an update, re-upload the changed
+skills' zips on claude.ai, or the account keeps serving the old version.

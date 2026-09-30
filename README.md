@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**55 skills: 45 from four upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**56 skills: 46 from five upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -15,10 +15,11 @@ inventory of what ended up here.
 | [emilkowalski/skills](https://github.com/emilkowalski/skills) — animation & design engineering | 13 | symlinks |
 | [obra/superpowers](https://github.com/obra/superpowers) — development methodology | 14 | symlinks |
 | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) — anti-over-engineering | 6 | symlinks |
+| [raphaelsalaja/skill](https://github.com/raphaelsalaja/skill), animation audit | 1 | symlinks |
 | Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 45 upstream skills to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 46 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -120,6 +121,16 @@ A persistent mode plus one-shot tools that push toward the smallest thing that w
 | `ponytail-debt` | Harvests `ponytail:` comments into a debt ledger so deliberate shortcuts get tracked. |
 | `ponytail-gain` | One-shot scoreboard of ponytail's measured impact. |
 | `ponytail-help` | Quick-reference card for ponytail modes and commands. |
+
+---
+
+## Animation audit, raphaelsalaja
+
+One skill from [raphaelsalaja/skill](https://github.com/raphaelsalaja/skill).
+
+| Skill | What it does |
+| --- | --- |
+| `12-principles-of-animation` | Audits animation code against Disney's 12 principles adapted for the web, and reports findings as file:line. |
 
 ---
 

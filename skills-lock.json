@@ -103,6 +103,12 @@
       "skillPath": "skills/soft-skill/SKILL.md",
       "computedHash": "7db385e4c5370e5a7fca9704a1361b056e4504ea6a03924bb86f33a4f00b5c73"
     },
+    "hiring-manager-bar": {
+      "source": "kemiljk/skills",
+      "sourceType": "github",
+      "skillPath": "skills/hiring-manager-bar/SKILL.md",
+      "computedHash": "777a83bd9093659dc6890492c00d5c82ba4c414138232a70877021065be8e58f"
+    },
     "image-to-code": {
       "source": "leonxlnx/taste-skill",
       "sourceType": "github",

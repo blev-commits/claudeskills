@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**56 skills: 46 from five upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**57 skills: 47 from six upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -16,10 +16,11 @@ inventory of what ended up here.
 | [obra/superpowers](https://github.com/obra/superpowers) — development methodology | 14 | symlinks |
 | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) — anti-over-engineering | 6 | symlinks |
 | [raphaelsalaja/skill](https://github.com/raphaelsalaja/skill), animation audit | 1 | symlinks |
+| [kemiljk/skills](https://github.com/kemiljk/skills), portfolio review | 1 | symlinks |
 | Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 46 upstream skills to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 47 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -131,6 +132,16 @@ One skill from [raphaelsalaja/skill](https://github.com/raphaelsalaja/skill).
 | Skill | What it does |
 | --- | --- |
 | `12-principles-of-animation` | Audits animation code against Disney's 12 principles adapted for the web, and reports findings as file:line. |
+
+---
+
+## Portfolio review, kemiljk
+
+One skill from [kemiljk/skills](https://github.com/kemiljk/skills).
+
+| Skill | What it does |
+| --- | --- |
+| `hiring-manager-bar` | Reviews a job-seeking portfolio the way a hiring manager reads it, then recommends prioritized changes to the site's code and content. Reviews by default; only implements when asked. |
 
 ---
 

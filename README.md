@@ -5,14 +5,14 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**57 skills: 47 from six upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**58 skills: 48 from six upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
 | Collection | Skills | Layout |
 | --- | --- | --- |
 | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) — design & image generation | 12 | symlinks |
-| [emilkowalski/skills](https://github.com/emilkowalski/skills) — animation & design engineering | 13 | symlinks |
+| [emilkowalski/skills](https://github.com/emilkowalski/skills), animation and design engineering | 14 | symlinks |
 | [obra/superpowers](https://github.com/obra/superpowers) — development methodology | 14 | symlinks |
 | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) — anti-over-engineering | 6 | symlinks |
 | [raphaelsalaja/skill](https://github.com/raphaelsalaja/skill), animation audit | 1 | symlinks |
@@ -20,7 +20,7 @@ inventory of what ended up here.
 | Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 47 upstream skills to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 48 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -63,7 +63,7 @@ field in its frontmatter, not the upstream folder name.
 
 ## Animation & design engineering — emilkowalski
 
-Thirteen skills from [emilkowalski/skills](https://github.com/emilkowalski/skills),
+Fourteen skills from [emilkowalski/skills](https://github.com/emilkowalski/skills),
 installed with `npx skills@latest add emilkowalski/skills`.
 
 | Skill | What it does |
@@ -79,6 +79,7 @@ installed with `npx skills@latest add emilkowalski/skills`.
 | `mobile-native` | The small fixes that separate a website from an app: sticky hover, tap highlights, the 100vh bug, inputs that zoom, safe areas. |
 | `pick-ui-library` | **Opt-in.** Picks a library from a curated list instead of hand-rolling a toast or installing something abandoned. |
 | `prototype` | **Opt-in.** Builds several genuinely different versions of a UI piece behind a picker so you can flip through them live. |
+| `break-ui` | Feeds a component worst-case data (long names, unbreakable emails, empty states, emoji, extreme numbers), renders it behind a demo toggle, and reports what broke with the fix for each. |
 | `ask-sonner` | Working guide to Sonner (the author's toast library): setup, styling, recipes, common fixes. |
 | `write-swift` | Modern Swift — value types, Swift 6 concurrency, generics, performance, Swift Testing. |
 

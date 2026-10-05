@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**59 skills: 49 from seven upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**108 skills: 98 from seven upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -17,11 +17,11 @@ inventory of what ended up here.
 | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) — anti-over-engineering | 6 | symlinks |
 | [raphaelsalaja/skill](https://github.com/raphaelsalaja/skill), animation audit | 1 | symlinks |
 | [kemiljk/skills](https://github.com/kemiljk/skills), portfolio review | 1 | symlinks |
-| [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills), marketing | 1 | symlinks |
+| [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills), marketing | 50 | symlinks |
 | Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 49 upstream skills to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 98 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -149,12 +149,22 @@ One skill from [kemiljk/skills](https://github.com/kemiljk/skills).
 
 ## Marketing, coreyhaines31
 
-One skill from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills),
-a collection of about forty marketing skills. Only this one is installed.
+The whole collection, fifty skills from
+[coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills).
+They cover acquisition, lifecycle, content, pricing and go to market, and they
+are the only non-design, non-engineering skills here.
 
-| Skill | What it does |
-| --- | --- |
-| `seo-audit` | Technical and on-page SEO audit: crawlability, indexation, Core Web Vitals, content quality, with reference files on hreflang and AI writing detection. Snyk rates it medium risk, which reflects the skill telling an agent to fetch external pages and run browser JavaScript; the content itself is documentation and citations, and it warns that fetched pages are untrusted. |
+`ab-testing`, `ad-creative`, `ads`, `ai-seo`, `analytics`, `aso`, `attribution`, `churn-prevention`, `co-marketing`, `cold-email`, `community-marketing`, `competitor-profiling`, `competitors`, `content-strategy`, `copy-editing`, `copywriting`, `cro`, `customer-research`, `directory-submissions`, `emails`, `events`, `free-tools`, `image`, `influencer-marketing`, `launch`, `lead-magnets`, `marketing-council`, `marketing-ideas`, `marketing-loops`, `marketing-plan`, `marketing-psychology`, `offers`, `onboarding`, `paywalls`, `popups`, `pricing`, `product-marketing`, `programmatic-seo`, `prospecting`, `public-relations`, `referrals`, `revops`, `sales-enablement`, `schema`, `seo-audit`, `signup`, `site-architecture`, `sms`, `social`, `video`
+
+`seo-audit` is the one that prompted the install: crawlability, indexation,
+Core Web Vitals and content quality, with reference files on hreflang and AI
+writing detection. Snyk rates it medium risk, which reflects the skill telling
+an agent to fetch external pages and run browser JavaScript; the content itself
+is documentation and citations, and it warns that fetched pages are untrusted.
+
+Fifty skills is a large block of descriptions in every session that loads them.
+If they start pulling Claude toward marketing framing on unrelated work, the
+lock file makes it easy to remove the ones that are not earning their place.
 
 ---
 

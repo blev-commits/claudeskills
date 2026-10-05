@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**58 skills: 48 from six upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**59 skills: 49 from seven upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -17,10 +17,11 @@ inventory of what ended up here.
 | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) — anti-over-engineering | 6 | symlinks |
 | [raphaelsalaja/skill](https://github.com/raphaelsalaja/skill), animation audit | 1 | symlinks |
 | [kemiljk/skills](https://github.com/kemiljk/skills), portfolio review | 1 | symlinks |
+| [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills), marketing | 1 | symlinks |
 | Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 48 upstream skills to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 49 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -143,6 +144,17 @@ One skill from [kemiljk/skills](https://github.com/kemiljk/skills).
 | Skill | What it does |
 | --- | --- |
 | `hiring-manager-bar` | Reviews a job-seeking portfolio the way a hiring manager reads it, then recommends prioritized changes to the site's code and content. Reviews by default; only implements when asked. |
+
+---
+
+## Marketing, coreyhaines31
+
+One skill from [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills),
+a collection of about forty marketing skills. Only this one is installed.
+
+| Skill | What it does |
+| --- | --- |
+| `seo-audit` | Technical and on-page SEO audit: crawlability, indexation, Core Web Vitals, content quality, with reference files on hreflang and AI writing detection. Snyk rates it medium risk, which reflects the skill telling an agent to fetch external pages and run browser JavaScript; the content itself is documentation and citations, and it warns that fetched pages are untrusted. |
 
 ---
 

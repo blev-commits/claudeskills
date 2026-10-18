@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**108 skills: 98 from seven upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**121 skills: 111 from twelve upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -18,10 +18,15 @@ inventory of what ended up here.
 | [raphaelsalaja/skill](https://github.com/raphaelsalaja/skill), animation audit | 1 | symlinks |
 | [kemiljk/skills](https://github.com/kemiljk/skills), portfolio review | 1 | symlinks |
 | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills), marketing | 50 | symlinks |
+| [anthropics/skills](https://github.com/anthropics/skills), frontend design | 1 | symlinks |
+| [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills), UI review and React | 4 | symlinks |
+| [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), design database | 1 | symlinks |
+| [bencium/bencium-claude-code-design-skill](https://github.com/bencium/bencium-claude-code-design-skill), UX designer | 2 | symlinks |
+| [accesslint/claude-marketplace](https://github.com/accesslint/claude-marketplace), accessibility | 5 | symlinks |
 | Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 98 upstream skills to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 111 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -185,6 +190,35 @@ not in `skills-lock.json`.
 | `design-review-prep` | Structures talking points and anticipates questions before a design review. |
 | `stakeholder-explainer` | Explains a design decision to a PM, engineer, executive, or client. |
 | `handoff-notes` | Developer handoff notes: behavior, states, and edge cases not visible in Figma. |
+
+---
+
+## UI/UX engineering — five collections
+
+Thirteen skills added together from the picks in Snyk's
+[top Claude skills for UI/UX engineers](https://snyk.io/articles/top-claude-skills-ui-ux-engineers/).
+Each was copied from its upstream folder at the commit noted and pinned in `skills-lock.json`.
+
+| Skill | Source (commit) | What it does |
+| --- | --- | --- |
+| `frontend-design` | anthropics/skills (`dbd4588`) | Anthropic's guide to distinctive, non-templated frontend design. |
+| `web-design-guidelines` | vercel-labs/agent-skills (`063bee9`) | Reviews UI code against Vercel's Web Interface Guidelines (accessibility, UX, web best practice). Fetches the current rule list when it runs. |
+| `vercel-react-best-practices` | vercel-labs/agent-skills (`063bee9`) | React and Next.js performance rules across 8 categories, ordered by impact. |
+| `vercel-composition-patterns` | vercel-labs/agent-skills (`063bee9`) | Component architecture: compound components, no boolean-prop sprawl, React 19 changes. |
+| `vercel-react-native-skills` | vercel-labs/agent-skills (`063bee9`) | React Native and Expo: list performance, animation, navigation, native modules. |
+| `ui-ux-pro-max` | nextlevelbuilder/ui-ux-pro-max-skill (`56ea9cf`) | Searchable local design database (styles, palettes, font pairings, UX rules) through a Python CLI. Its test suite was left out. |
+| `bencium-innovative-ux-designer` | bencium/bencium-claude-code-design-skill (`5de46a3`) | Ten isolated type-led directions, a human pick, then production. For work where originality matters. |
+| `bencium-controlled-ux-designer` | bencium/bencium-claude-code-design-skill (`5de46a3`) | Broad UX reference that asks before each design decision. |
+| `accessibility-scan` | accesslint/claude-marketplace (`2e9d733`) | One page, automated WCAG 2.2 scan over Chrome DevTools. |
+| `accessibility-inspect` | accesslint/claude-marketplace (`2e9d733`) | One page, hands-on keyboard, screen-reader, reflow and motion checks. |
+| `accessibility-audit` | accesslint/claude-marketplace (`2e9d733`) | Whole-site WCAG-EM audit combining scan and inspect. |
+| `accessibility-fix` | accesslint/claude-marketplace (`2e9d733`) | Fixes violations with a baseline, edit, verify loop. |
+| `accessibility-diff` | accesslint/claude-marketplace (`2e9d733`) | Regression check against uncommitted changes or a branch. |
+
+The AccessLint skills call the AccessLint MCP server (`npx -y @accesslint/mcp@latest`)
+and Chrome DevTools, so they only work in Claude Code with those installed. Upstream
+they share `../shared/methodology.md`; here each skill carries its own copy in
+`shared/` so it stands alone, and the links were updated to match.
 
 ---
 

@@ -13,6 +13,36 @@
       "skillPath": "skills/ab-testing/SKILL.md",
       "computedHash": "c42af0107540e71dfe9605eca51b5100d96730d0bddf51085fc0c9429e40083c"
     },
+    "accessibility-audit": {
+      "source": "accesslint/claude-marketplace",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-audit/SKILL.md",
+      "computedHash": "9c3cf98c23922bfe47157aef0f276ad49df0a05a11d848023ce7774116bf20b0"
+    },
+    "accessibility-diff": {
+      "source": "accesslint/claude-marketplace",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-diff/SKILL.md",
+      "computedHash": "03ca9c5d4cc0fc4807f03b77e95316001b1380c2f816fcd503ce0bef464fa0c0"
+    },
+    "accessibility-fix": {
+      "source": "accesslint/claude-marketplace",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-fix/SKILL.md",
+      "computedHash": "729858ea4c10cc3e9def46352935e345bf8cee22c68a38f75bed8ce9cad7de64"
+    },
+    "accessibility-inspect": {
+      "source": "accesslint/claude-marketplace",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-inspect/SKILL.md",
+      "computedHash": "9a92a8c55d0b00a7b9cb470b4ba1dbec4546c4556456477cc7a4d44b23841dc8"
+    },
+    "accessibility-scan": {
+      "source": "accesslint/claude-marketplace",
+      "sourceType": "github",
+      "skillPath": "plugins/accesslint/skills/accessibility-scan/SKILL.md",
+      "computedHash": "098c3ea296c20cf4fc0e1b7a276dcf2be9faab512c4bb0f1a81bfedc8c445f68"
+    },
     "ad-creative": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
@@ -78,6 +108,18 @@
       "sourceType": "github",
       "skillPath": "skills/attribution/SKILL.md",
       "computedHash": "d00a3c77ceb1ba0ba24aa1e7750bd7b9ab05257db05371580dc407577f5ac666"
+    },
+    "bencium-controlled-ux-designer": {
+      "source": "bencium/bencium-claude-code-design-skill",
+      "sourceType": "github",
+      "skillPath": "bencium-controlled-ux-designer/skills/bencium-controlled-ux-designer/SKILL.md",
+      "computedHash": "4aacbb29e05d9e45600105fbdcb24b38fa7de40d29db025f05a1b121308afc5c"
+    },
+    "bencium-innovative-ux-designer": {
+      "source": "bencium/bencium-claude-code-design-skill",
+      "sourceType": "github",
+      "skillPath": "bencium-innovative-ux-designer/skills/bencium-innovative-ux-designer/SKILL.md",
+      "computedHash": "4f9f97fb8917c8bb6d8c9cc0e948b02159e86d61562719d493d14f3df4083cfb"
     },
     "brainstorming": {
       "source": "obra/superpowers",
@@ -222,6 +264,12 @@
       "sourceType": "github",
       "skillPath": "skills/free-tools/SKILL.md",
       "computedHash": "ab40a39f8b10a0ee423f47005a49defcae4e9b82b4c6e5be1d6c67d7f963973e"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "89496d5dd00f4810205f351759594fc2742bf8eea85a2f2b2d1de59f4bd91576"
     },
     "full-output-enforcement": {
       "source": "leonxlnx/taste-skill",
@@ -547,6 +595,12 @@
       "skillPath": "skills/test-driven-development/SKILL.md",
       "computedHash": "a4126a9c5f17be3c228aa9e5755898ade283448b86099f56f40852e8c14532be"
     },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "41ae13e745b1463c7198a09ffbc445459c5a911543b771576c8f3643a8344737"
+    },
     "using-git-worktrees": {
       "source": "obra/superpowers",
       "sourceType": "github",
@@ -559,6 +613,24 @@
       "skillPath": "skills/using-superpowers/SKILL.md",
       "computedHash": "c7abe8bdc2099bbe4f245454d32c7563ccd2bb41dcc218b02b461c2acc3c6ae6"
     },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "computedHash": "5b3564ca435f4714d5e65023351e1999e4744818603a9cfb6a6f6a61b7d84918"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "74f142d28d360d78e8bac4f239a84c87f0ced9015729bc72b5458d82ff45b015"
+    },
+    "vercel-react-native-skills": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-native-skills/SKILL.md",
+      "computedHash": "b4b0af9b853227db681fd5b8a9e5f5ddd1603af1f6ab388e06ff12c1f6f3aadb"
+    },
     "verification-before-completion": {
       "source": "obra/superpowers",
       "sourceType": "github",
@@ -570,6 +642,12 @@
       "sourceType": "github",
       "skillPath": "skills/video/SKILL.md",
       "computedHash": "9755cc816fc5c05e382fb551d76158060fd89ee2b3105a73d2c8165e3e6bd9e1"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
     },
     "write-swift": {
       "source": "emilkowalski/skills",

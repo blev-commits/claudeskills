@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**143 skills: 133 from sixteen upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**144 skills: 134 from sixteen upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -29,7 +29,7 @@ inventory of what ended up here.
 | Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 132 upstream skills to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 133 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -41,16 +41,17 @@ not reach for them on its own, so invoke them by name (`/prototype`).
 
 ## Design & image generation — taste-skill
 
-Twelve skills from [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill)
-(commit `e79ca9e`) — everything except `taste-skill-v1`, which duplicates the v2
-default and was deliberately left out. Directory names match each skill's install name — the `name:`
+Thirteen skills from [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill)
+(commit `f624f37`) — everything except `taste-skill-v1`, which is superseded and
+was deliberately left out. Directory names match each skill's install name — the `name:`
 field in its frontmatter, not the upstream folder name.
 
 ### Implementation skills (output code)
 
 | Skill | Upstream folder | What it does |
 | --- | --- | --- |
-| `design-taste-frontend` | `taste-skill` | v2 default. Reads the brief, infers the design direction, ships landing pages / portfolios / redesigns that don't look templated. Audit-first on redesigns, strict pre-flight check. |
+| `design-taste-frontend` | `taste-skill` | tasteskill v2. Deals researched art directions (type, palette, hero, sections) from a library of 247 gallery sites with `scripts/draw.mjs`, checks the house style in a real browser with `scripts/inspect.mjs`, then screenshots and fixes. Websites only, not app screens. Scripts need Node 22+ and Chrome; `assets.mjs` finds credited open-archive images. |
+| `design-taste-frontend-v2-experimental` | `taste-skill-v2-experimental` | The previous single-file v2: reads the brief, infers a direction, audit-first on redesigns, strict pre-flight check. Kept for app screens and stacks where the scripts can't run. |
 | `gpt-taste` | `gpt-tasteskill` | Stricter GPT/Codex variant: true randomized layout variance, AIDA structure, wide editorial type, strict GSAP ScrollTriggers. |
 | `image-to-code` | `image-to-code-skill` | Image-first pipeline: generate section references, analyze them, then build the frontend to match. |
 | `redesign-existing-projects` | `redesign-skill` | Audits an existing UI for generic AI patterns, then fixes layout, spacing, hierarchy, and styling without breaking it. |

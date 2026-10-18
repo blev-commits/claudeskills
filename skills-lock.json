@@ -319,6 +319,12 @@
       "skillPath": "skills/imagegen-frontend-web/SKILL.md",
       "computedHash": "65f5ae59fa317567809438310b1c54f78cd133426deb43e4d3d4ca4c8f541628"
     },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/impeccable/SKILL.md",
+      "computedHash": "0a8702242808ea4914c75c78e3d0a0c27706bd739be820f848013661de7ad8af"
+    },
     "improve-animations": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
@@ -571,11 +577,107 @@
       "skillPath": "skills/social/SKILL.md",
       "computedHash": "7eeedd17a4d59d75281ecd7ff6cb6e2992b1095459550e8d97ef1cae522ea389"
     },
+    "stitch-code-to-design": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-design/skills/code-to-design/SKILL.md",
+      "computedHash": "f5a07bc00f3e4d196d9812c41f7388b555333a1a0bb49071c2fda21781f9f34d"
+    },
+    "stitch-design-md": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-utilities/skills/design-md/SKILL.md",
+      "computedHash": "2b269afe16807c4d7c8d20ccb71f57998a3ad8ceec7008d6f20a1f778d49963e"
+    },
     "stitch-design-taste": {
       "source": "leonxlnx/taste-skill",
       "sourceType": "github",
       "skillPath": "skills/stitch-skill/SKILL.md",
       "computedHash": "13322f38406cd3abf16ba45e35bdc9b18002d0153a79b4612b97aefc65d5a335"
+    },
+    "stitch-enhance-prompt": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-utilities/skills/enhance-prompt/SKILL.md",
+      "computedHash": "bcd4a518365f907c682156d54f01167f1acea6c38770689f897265b68edf1570"
+    },
+    "stitch-extract-design-md": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-design/skills/extract-design-md/SKILL.md",
+      "computedHash": "9a6e66edb0477c175b6dc732273cf83f98e677a9df4d4b8001558f7792d36fa7"
+    },
+    "stitch-extract-static-html": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-design/skills/extract-static-html/SKILL.md",
+      "computedHash": "35999b5a44cd780a522258ae6929c53fe3d94f96fa7d0686c71893db5e15f2b2"
+    },
+    "stitch-generate-design": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-design/skills/generate-design/SKILL.md",
+      "computedHash": "2555ff204b9fa3b0a95aae63246608eb2bf79f4998c24227d2990dae48d95105"
+    },
+    "stitch-loop": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-utilities/skills/stitch-loop/SKILL.md",
+      "computedHash": "065ced8084de93a388390382d26356913744977fb231257b746cd5a45846065c"
+    },
+    "stitch-manage-design-system": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-design/skills/manage-design-system/SKILL.md",
+      "computedHash": "4662dde3249fa46e8831c85d33a057e157edabca3d222ae85c78227c61506ef2"
+    },
+    "stitch-react-components": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-build/skills/react-components/SKILL.md",
+      "computedHash": "20628e8bbd5639eabba359e2937429557c70747b5f182c046169dab0b7621c8e"
+    },
+    "stitch-react-native": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-build/skills/react-native/SKILL.md",
+      "computedHash": "35e038bf7d8fbdcab360cc3f8b9a63f6eb58f224e28cd55ed25ec35fa27fc84f"
+    },
+    "stitch-react-vite-dashboard": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-build/skills/react-vite-dashboard/SKILL.md",
+      "computedHash": "4303db2ae76967aa288f7dbf671cce17e3c78f0a50437f0abfda86edab2dbcf8"
+    },
+    "stitch-remotion": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-build/skills/remotion/SKILL.md",
+      "computedHash": "db38397799183873db065bccfe083e85bb3170262ca3bf370254f6e417fbcba0"
+    },
+    "stitch-shadcn-ui": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-build/skills/shadcn-ui/SKILL.md",
+      "computedHash": "ff603e372c40c5883cbb9f25cce18e61c14356b442497e8c650c851c48913cbc"
+    },
+    "stitch-site-md": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-utilities/skills/site-md/SKILL.md",
+      "computedHash": "45c5117e54cbb51646d6aa6decf2eda8ca2ee7bebdc7936f8c1b90a31ee89be5"
+    },
+    "stitch-taste-design": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-utilities/skills/taste-design/SKILL.md",
+      "computedHash": "787eb7d27f454defff54efa7f7b1f99b857b71da203187341f6c5ff4eb9e0d4a"
+    },
+    "stitch-upload-to-stitch": {
+      "source": "google-labs-code/stitch-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/stitch-design/skills/upload-to-stitch/SKILL.md",
+      "computedHash": "2d8be32b5329adf70b9cbd68621e020ca774e167662196b520a4fc5a5ac8f5c7"
     },
     "subagent-driven-development": {
       "source": "obra/superpowers",
@@ -594,6 +696,24 @@
       "sourceType": "github",
       "skillPath": "skills/test-driven-development/SKILL.md",
       "computedHash": "a4126a9c5f17be3c228aa9e5755898ade283448b86099f56f40852e8c14532be"
+    },
+    "transitions-dev": {
+      "source": "Jakubantalik/transitions.dev",
+      "sourceType": "github",
+      "skillPath": "skills/transitions-dev/SKILL.md",
+      "computedHash": "91c26bc8d817ce933a3739554ac653d562ebc0863d886d1eea2f5fc1cb9ceca5"
+    },
+    "transitions-polish": {
+      "source": "Jakubantalik/transitions.dev",
+      "sourceType": "github",
+      "skillPath": "skills/transitions-polish/SKILL.md",
+      "computedHash": "d966f24fa0da81060b60b321820ad55047a2b6769d07a388d8667b9b8518be55"
+    },
+    "transitions-ui-generation": {
+      "source": "Jakubantalik/transitions.dev",
+      "sourceType": "github",
+      "skillPath": "skills/transitions-ui-generation/SKILL.md",
+      "computedHash": "43cde70713589a7e411ea187c08823dc114812291b55f1983c69af332e316001"
     },
     "ui-ux-pro-max": {
       "source": "nextlevelbuilder/ui-ux-pro-max-skill",
@@ -630,6 +750,12 @@
       "sourceType": "github",
       "skillPath": "skills/react-native-skills/SKILL.md",
       "computedHash": "b4b0af9b853227db681fd5b8a9e5f5ddd1603af1f6ab388e06ff12c1f6f3aadb"
+    },
+    "vercel-react-view-transitions": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-view-transitions/SKILL.md",
+      "computedHash": "0d0012537fe7619026f0a844fe505958beb2d525afb8f854ac7217798a2785e2"
     },
     "verification-before-completion": {
       "source": "obra/superpowers",

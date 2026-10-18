@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**121 skills: 111 from twelve upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**142 skills: 132 from fifteen upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -19,14 +19,17 @@ inventory of what ended up here.
 | [kemiljk/skills](https://github.com/kemiljk/skills), portfolio review | 1 | symlinks |
 | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills), marketing | 50 | symlinks |
 | [anthropics/skills](https://github.com/anthropics/skills), frontend design | 1 | symlinks |
-| [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills), UI review and React | 4 | symlinks |
+| [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills), UI review and React | 5 | symlinks |
 | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill), design database | 1 | symlinks |
 | [bencium/bencium-claude-code-design-skill](https://github.com/bencium/bencium-claude-code-design-skill), UX designer | 2 | symlinks |
 | [accesslint/claude-marketplace](https://github.com/accesslint/claude-marketplace), accessibility | 5 | symlinks |
+| [pbakaus/impeccable](https://github.com/pbakaus/impeccable), design commands and anti-slop rules | 1 | symlinks |
+| [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills), Google Stitch | 16 | symlinks |
+| [Jakubantalik/transitions.dev](https://github.com/Jakubantalik/transitions.dev), CSS transitions | 3 | symlinks |
 | Own — product design workflow | 10 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
-symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 111 upstream skills to
+symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 132 upstream skills to
 their source and a content hash. taste-skill was originally copied in as real
 directories, visible only to Claude Code; it was reinstalled through the CLI to
 match the rest.
@@ -219,6 +222,57 @@ The AccessLint skills call the AccessLint MCP server (`npx -y @accesslint/mcp@la
 and Chrome DevTools, so they only work in Claude Code with those installed. Upstream
 they share `../shared/methodology.md`; here each skill carries its own copy in
 `shared/` so it stands alone, and the links were updated to match.
+
+---
+
+## Taste, Stitch and motion — impeccable, stitch-skills, transitions.dev
+
+Added from the "15 tools for designing with Claude" list, plus transitions.dev.
+
+| Skill | Source (commit) | What it does |
+| --- | --- | --- |
+| `impeccable` | pbakaus/impeccable (`08d5b47`) | One skill, 24 commands (`polish`, `critique`, `audit`, `bolder`, `quieter`, `typeset`, `layout`, `harden` …) with reference files and anti-slop rules. Its helper script downloads a small binary from the project's GitHub releases on first use. |
+| `vercel-react-view-transitions` | vercel-labs/agent-skills (`063bee9`) | React's View Transition API: route changes, shared elements, enter/exit, list reorder. |
+| `transitions-dev` | Jakubantalik/transitions.dev (`7ec0b0b`) | 18 copy-ready CSS transitions (dropdowns, modals, number pop-in, success check, error shake …) with motion tokens and reduced-motion guards. |
+| `transitions-polish` | Jakubantalik/transitions.dev (`7ec0b0b`) | Tunes existing motion against the transitions.dev token scale: duration, distance, scale, blur, easing. |
+| `transitions-ui-generation` | Jakubantalik/transitions.dev (`7ec0b0b`) | Makes UI appear as if an agent is generating it: dotted wireframe, then reveal. |
+
+Google's sixteen Stitch skills (`0337446`) are prefixed `stitch-` here. Upstream, nine are
+named `stitch::<name>`, which isn't a valid skill name, and the rest have generic names
+(`shadcn-ui`, `remotion`, `design-md`). The `name:` field was rewritten to match each
+folder and the cross-links between them were updated. Most of them call the Stitch MCP
+server, so they need it connected (see below); `stitch-enhance-prompt`, `stitch-site-md`,
+`stitch-extract-static-html` and `stitch-extract-design-md` work on their own.
+
+`stitch-react-components`, `stitch-react-native`, `stitch-react-vite-dashboard`,
+`stitch-remotion`, `stitch-shadcn-ui`, `stitch-code-to-design`, `stitch-extract-design-md`,
+`stitch-extract-static-html`, `stitch-generate-design`, `stitch-manage-design-system`,
+`stitch-upload-to-stitch`, `stitch-design-md`, `stitch-enhance-prompt`, `stitch-site-md`,
+`stitch-loop`, `stitch-taste-design`.
+
+`stitch-taste-design` overlaps with taste-skill's `stitch-design-taste`; both are kept.
+
+---
+
+## Design MCP servers
+
+Servers that pair with the skills above. These are not vendored; each line is how to
+connect it. Keys and tokens go in your shell or the client, never in this repo.
+
+| Server | Where it works | How to connect |
+| --- | --- | --- |
+| [Excalidraw](https://github.com/excalidraw/excalidraw-mcp) | claude.ai, Claude Code | claude.ai connector directory (no sign-in). Claude Code: `claude mcp add --transport http excalidraw https://mcp.excalidraw.com` |
+| [tldraw](https://github.com/tldraw/tldraw) | claude.ai | claude.ai connector directory (no sign-in). The repo itself is the SDK and agent starter kit. |
+| [Figma (official)](https://github.com/figma/mcp-server-guide) | claude.ai, Claude Code | claude.ai Figma connector. Claude Code: `claude mcp add --transport http figma https://mcp.figma.com/mcp` |
+| [Figma-Context-MCP](https://github.com/GLips/Figma-Context-MCP) | Claude Code | `claude mcp add figma-context -- npx -y figma-developer-mcp --figma-api-key=$FIGMA_API_KEY --stdio` (Figma personal access token) |
+| [cursor-talk-to-figma-mcp](https://github.com/grab/cursor-talk-to-figma-mcp) | Claude Code | `claude mcp add TalkToFigma -- bunx cursor-talk-to-figma-mcp@latest`, then run `bun socket` from a clone and open the Talk to Figma plugin in Figma |
+| [Penpot](https://github.com/penpot/penpot-mcp) | Claude Code | Clone, `npm install && npm run bootstrap`, load the Penpot MCP plugin in Penpot and connect it to the local server |
+| [shadcn/ui](https://ui.shadcn.com/docs/mcp) | Claude Code | In a project: `pnpm dlx shadcn@latest mcp init --client claude` |
+| [21st.dev Magic](https://github.com/21st-dev/magic-mcp) | Claude Code | `npx @21st-dev/cli@latest init --client claude` with a key from [21st.dev/mcp](https://21st.dev/mcp) |
+| [Storybook](https://github.com/storybookjs/addon-mcp) | Claude Code | Add `@storybook/addon-mcp` to the project's Storybook, then `claude mcp add --transport http storybook http://localhost:6006/mcp` while it runs |
+| [Google Stitch](https://stitch.withgoogle.com) | Claude Code | Needed by most `stitch-*` skills. Requires a Stitch API key from your Stitch settings. |
+
+[Onlook](https://github.com/onlook-dev/onlook) is a standalone visual editor for Next.js apps, not a skill or MCP.
 
 ---
 

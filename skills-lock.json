@@ -343,6 +343,12 @@
       "skillPath": "skills/influencer-marketing/SKILL.md",
       "computedHash": "a4e2a98cd1e692300869f2ac2035d3e7e63fac7b53215603584e5eb864768aea"
     },
+    "landing-page-design": {
+      "source": "elayadesign/ai-design-skills",
+      "sourceType": "github",
+      "skillPath": "skills/landing-page-design/SKILL.md",
+      "computedHash": "6b5ab91701796daa00a5f357785cf9ca1851cc9588eb2d854c600b5d68be11d6"
+    },
     "launch": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",

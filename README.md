@@ -208,6 +208,12 @@ not in `skills-lock.json`.
 | --- | --- | --- |
 | `lintapple` | gholtzap/lintapple (`9eee0ef`) | Runs the lintapple CLI against a running app to check fonts, type scale, contrast, control size, gaps, insets, alignment, radii and overflow, then fixes findings without loosening the policy. Upstream ships a CLI, not a skill, so this SKILL.md was written from its README and AGENTS.md. MIT. |
 
+## Shadows — MengTo
+
+| Skill | Source (commit) | What it does |
+| --- | --- | --- |
+| `beautiful-shadows` | MengTo/Skills (`398cd41`) | Three exact layered neutral shadow utilities (sm, md, lg) for cards, controls, popovers and hero media, with rules for when to use each. SKILL.md copied by hand (demo folder left out); `npx skills add` couldn't reach npm from here, so it isn't pinned in skills-lock.json. MIT. |
+
 ## UI/UX engineering — five collections
 
 Thirteen skills added together from the picks in Snyk's

@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**142 skills: 132 from fifteen upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**143 skills: 133 from sixteen upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -195,6 +195,12 @@ not in `skills-lock.json`.
 | `handoff-notes` | Developer handoff notes: behavior, states, and edge cases not visible in Figma. |
 
 ---
+
+## Landing pages — elayadesign
+
+| Skill | Source (commit) | What it does |
+| --- | --- | --- |
+| `landing-page-design` | elayadesign/ai-design-skills (`1c1e97c`) | Builds high-converting landing pages: intake questions, page structure, conversion copy and SEO, then strict rules for type, spacing, radius, backgrounds, icons and motion. MIT. |
 
 ## UI/UX engineering — five collections
 

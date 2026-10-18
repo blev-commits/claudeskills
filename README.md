@@ -202,6 +202,12 @@ not in `skills-lock.json`.
 | --- | --- | --- |
 | `landing-page-design` | elayadesign/ai-design-skills (`1c1e97c`) | Builds high-converting landing pages: intake questions, page structure, conversion copy and SEO, then strict rules for type, spacing, radius, backgrounds, icons and motion. MIT. |
 
+## UI linting — lintapple
+
+| Skill | Source (commit) | What it does |
+| --- | --- | --- |
+| `lintapple` | gholtzap/lintapple (`9eee0ef`) | Runs the lintapple CLI against a running app to check fonts, type scale, contrast, control size, gaps, insets, alignment, radii and overflow, then fixes findings without loosening the policy. Upstream ships a CLI, not a skill, so this SKILL.md was written from its README and AGENTS.md. MIT. |
+
 ## UI/UX engineering — five collections
 
 Thirteen skills added together from the picks in Snyk's

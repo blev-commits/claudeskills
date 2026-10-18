@@ -270,6 +270,7 @@ connect it. Keys and tokens go in your shell or the client, never in this repo.
 | [shadcn/ui](https://ui.shadcn.com/docs/mcp) | Claude Code | In a project: `pnpm dlx shadcn@latest mcp init --client claude` |
 | [21st.dev Magic](https://github.com/21st-dev/magic-mcp) | Claude Code | `npx @21st-dev/cli@latest init --client claude` with a key from [21st.dev/mcp](https://21st.dev/mcp) |
 | [Storybook](https://github.com/storybookjs/addon-mcp) | Claude Code | Add `@storybook/addon-mcp` to the project's Storybook, then `claude mcp add --transport http storybook http://localhost:6006/mcp` while it runs |
+| [Inspo](https://github.com/Nutlope/inspo) | Claude Code, any MCP client | `npx -y inspo-mcp install` (detects installed clients and writes their config; `--dry-run` previews), or `claude mcp add --transport http inspo https://inspomcp.dev/api/mcp`. Free, read-only: searches 800+ real websites for design reference |
 | [Google Stitch](https://stitch.withgoogle.com) | Claude Code | Needed by most `stitch-*` skills. Requires a Stitch API key from your Stitch settings. |
 
 [Onlook](https://github.com/onlook-dev/onlook) is a standalone visual editor for Next.js apps, not a skill or MCP.

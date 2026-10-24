@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**144 skills: 134 from sixteen upstream collections plus 10 of my own design skills**, plus project hooks, slash commands
+**145 skills: 134 from sixteen upstream collections plus 11 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -26,7 +26,7 @@ inventory of what ended up here.
 | [pbakaus/impeccable](https://github.com/pbakaus/impeccable), design commands and anti-slop rules | 1 | symlinks |
 | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills), Google Stitch | 16 | symlinks |
 | [Jakubantalik/transitions.dev](https://github.com/Jakubantalik/transitions.dev), CSS transitions | 3 | symlinks |
-| Own — product design workflow | 10 | symlinks |
+| Own — product design workflow | 11 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
 symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 133 upstream skills to
@@ -179,7 +179,7 @@ lock file makes it easy to remove the ones that are not earning their place.
 
 ## Product design workflow — own
 
-Ten skills written for this collection, not installed from upstream, so they are
+Eleven skills written for this collection, not installed from upstream, so they are
 not in `skills-lock.json`.
 
 | Skill | What it does |
@@ -194,6 +194,7 @@ not in `skills-lock.json`.
 | `design-review-prep` | Structures talking points and anticipates questions before a design review. |
 | `stakeholder-explainer` | Explains a design decision to a PM, engineer, executive, or client. |
 | `handoff-notes` | Developer handoff notes: behavior, states, and edge cases not visible in Figma. |
+| `design-saas` | Premium SaaS dashboard layouts and non-Excel chart styling for sports, entertainment and gaming analytics, on web and React Native, with every state covered (populated, skeleton, empty, error). |
 
 ---
 

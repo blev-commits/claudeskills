@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**148 skills: 134 from sixteen upstream collections plus 14 of my own design skills**, plus project hooks, slash commands
+**149 skills: 134 from sixteen upstream collections plus 15 of my own skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -179,7 +179,7 @@ lock file makes it easy to remove the ones that are not earning their place.
 
 ## Product design workflow — own
 
-Fourteen skills written for this collection, not installed from upstream, so they are
+Fifteen skills written for this collection, not installed from upstream, so they are
 not in `skills-lock.json`.
 
 | Skill | What it does |
@@ -198,6 +198,7 @@ not in `skills-lock.json`.
 | `mueller-seo` | SEO, indexing, structured data, AI search and tracking decisions grounded in Google's docs and John Mueller's guidance, with myths flagged and every claim tagged by evidence level. |
 | `react-lint` | Lints React files for hardcoded colors, spacing, radii, type sizes, shadows and borders, swaps exact matches for the project's own tokens, then trims dead imports and empty fragments. |
 | `ux-heuristic-analysis` | Forensic UX/HMI heuristic evaluation of a site, app or Figma file: five analytical lenses, Nielsen's 10 heuristics, 0 to 4 severity, then a fixed report with findings, recommendations, ASCII wireframes, copy rewrites and current vs optimized flow maps. |
+| `igaming-competitive-teardown` | Competitive teardowns of sweepstakes casinos (SC/GC) and mystery commerce: gathers prior work first, then covers hold/RTP math, acquisition loops, regulation, payout velocity and churn vectors, with an sc_unplayed / sc_redeemable wallet split. |
 
 ---
 

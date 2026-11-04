@@ -153,7 +153,6 @@ One skill from [kemiljk/skills](https://github.com/kemiljk/skills).
 | Skill | What it does |
 | --- | --- |
 | `hiring-manager-bar` | Reviews a job-seeking portfolio the way a hiring manager reads it, then recommends prioritized changes to the site's code and content. Reviews by default; only implements when asked. |
-| `igaming-competitive-teardown` | Competitive teardowns of sweepstakes casinos (SC/GC) and mystery commerce: gathers prior work first, then covers hold/RTP math, acquisition loops, regulation, payout velocity and churn vectors, with an sc_unplayed / sc_redeemable wallet split. |
 
 ---
 
@@ -199,6 +198,7 @@ not in `skills-lock.json`.
 | `mueller-seo` | SEO, indexing, structured data, AI search and tracking decisions grounded in Google's docs and John Mueller's guidance, with myths flagged and every claim tagged by evidence level. |
 | `react-lint` | Lints React files for hardcoded colors, spacing, radii, type sizes, shadows and borders, swaps exact matches for the project's own tokens, then trims dead imports and empty fragments. |
 | `ux-heuristic-analysis` | Forensic UX/HMI heuristic evaluation of a site, app or Figma file: five analytical lenses, Nielsen's 10 heuristics, 0 to 4 severity, then a fixed report with findings, recommendations, ASCII wireframes, copy rewrites and current vs optimized flow maps. |
+| `igaming-competitive-teardown` | Competitive teardowns of sweepstakes casinos (SC/GC) and mystery commerce: gathers prior work first, then covers hold/RTP math, acquisition loops, regulation, payout velocity and churn vectors, with an sc_unplayed / sc_redeemable wallet split. |
 
 ---
 

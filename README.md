@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**147 skills: 134 from sixteen upstream collections plus 13 of my own design skills**, plus project hooks, slash commands
+**148 skills: 134 from sixteen upstream collections plus 14 of my own design skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -179,7 +179,7 @@ lock file makes it easy to remove the ones that are not earning their place.
 
 ## Product design workflow — own
 
-Thirteen skills written for this collection, not installed from upstream, so they are
+Fourteen skills written for this collection, not installed from upstream, so they are
 not in `skills-lock.json`.
 
 | Skill | What it does |
@@ -197,6 +197,7 @@ not in `skills-lock.json`.
 | `design-saas` | Premium SaaS dashboard layouts and non-Excel chart styling for sports, entertainment and gaming analytics, on web and React Native, with every state covered (populated, skeleton, empty, error). |
 | `mueller-seo` | SEO, indexing, structured data, AI search and tracking decisions grounded in Google's docs and John Mueller's guidance, with myths flagged and every claim tagged by evidence level. |
 | `react-lint` | Lints React files for hardcoded colors, spacing, radii, type sizes, shadows and borders, swaps exact matches for the project's own tokens, then trims dead imports and empty fragments. |
+| `ux-heuristic-analysis` | Forensic UX/HMI heuristic evaluation of a site, app or Figma file: five analytical lenses, Nielsen's 10 heuristics, 0 to 4 severity, then a fixed report with findings, recommendations, ASCII wireframes, copy rewrites and current vs optimized flow maps. |
 
 ---
 

@@ -5,7 +5,7 @@ Personal collection of agent skills. Sources live in `.agents/skills/` — the
 `.claude/skills/` holds symlinks to them, so sessions started in this repository
 pick them up automatically.
 
-**149 skills: 134 from sixteen upstream collections plus 15 of my own skills**, plus project hooks, slash commands
+**150 skills: 134 from sixteen upstream collections plus 16 of my own skills**, plus project hooks, slash commands
 and one plugin. Each collection was installed separately; this file is the single
 inventory of what ended up here.
 
@@ -26,7 +26,7 @@ inventory of what ended up here.
 | [pbakaus/impeccable](https://github.com/pbakaus/impeccable), design commands and anti-slop rules | 1 | symlinks |
 | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills), Google Stitch | 16 | symlinks |
 | [Jakubantalik/transitions.dev](https://github.com/Jakubantalik/transitions.dev), CSS transitions | 3 | symlinks |
-| Own — product design workflow | 13 | symlinks |
+| Own — product design workflow | 16 | symlinks |
 
 One layout throughout: every skill lives in `.agents/skills/<name>/` with a
 symlink from `.claude/skills/<name>`, and `skills-lock.json` pins the 133 upstream skills to
@@ -179,7 +179,7 @@ lock file makes it easy to remove the ones that are not earning their place.
 
 ## Product design workflow — own
 
-Fifteen skills written for this collection, not installed from upstream, so they are
+Sixteen skills written for this collection, not installed from upstream, so they are
 not in `skills-lock.json`.
 
 | Skill | What it does |
@@ -199,6 +199,7 @@ not in `skills-lock.json`.
 | `react-lint` | Lints React files for hardcoded colors, spacing, radii, type sizes, shadows and borders, swaps exact matches for the project's own tokens, then trims dead imports and empty fragments. |
 | `ux-heuristic-analysis` | Forensic UX/HMI heuristic evaluation of a site, app or Figma file: five analytical lenses, Nielsen's 10 heuristics, 0 to 4 severity, then a fixed report with findings, recommendations, ASCII wireframes, copy rewrites and current vs optimized flow maps. |
 | `igaming-competitive-teardown` | Competitive teardowns of sweepstakes casinos (SC/GC) and mystery commerce: gathers prior work first, then covers hold/RTP math, acquisition loops, regulation, payout velocity and churn vectors, with an sc_unplayed / sc_redeemable wallet split. |
+| `square-one-principles` | Foundational visual design, typography, Gestalt and motion principles, with create and review procedures, a quick-reference table of targets, a fixed review report format, and a measurable Check for every principle. |
 
 ---
 
